@@ -21,10 +21,12 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull(message = "Balance cannot be null")
     @PositiveOrZero(message = "Balance must be zero or positive")
-    private Integer balance = 0;
+    private Integer balance;
 
+    @NotNull(message = "Total grade cannot be null")
     @Min(value = 0, message = "Total grade must be 0 or more")
-    @Max(value = 100, message = "Total grade cannot exceed 100")
-    private Integer totalGrade = 0;
+    @Max(value = 100, message = "Total grade cannot be more 100")
+    private Integer totalGrade;
 }

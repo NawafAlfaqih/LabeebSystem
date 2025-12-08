@@ -28,10 +28,10 @@ public class TeacherReview {
     @Max(value = 5, message = "Rating cannot be more than 5")
     private Integer rating;
 
-
+    @NotEmpty(message = "Comment cannot be empty")
     @Size(min = 3, max = 200, message = "Comment must be between 3 and 200 characters")
     private String comment;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
+    @NotNull(message = "date cannot be null")
+    private LocalDateTime createdAt;
 }

@@ -26,9 +26,11 @@ public class Parent {
     private String Email;
 
     @NotEmpty(message = "Password cannot be empty")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$", message = "Password must contain uppercase, lowercase, number and be at least 8 characters")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$",
+            message = "Password must contain uppercase, lowercase, number and be at least 8 characters")
     private String password;
 
+    @NotNull(message = "Balance cannot be null")
     @PositiveOrZero(message = "Balance must be zero or positive")
-    private Double balance = 0.0;
+    private Double balance;
 }
