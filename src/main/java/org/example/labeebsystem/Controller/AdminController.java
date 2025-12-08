@@ -24,19 +24,19 @@ public class AdminController {
     @PostMapping("/add")
     public ResponseEntity<?> addAdmin(@RequestBody @Valid Admin admin){
         adminService.addAdmin(admin);
-        return ResponseEntity.status(200).body("Admin added successfully");
+        return ResponseEntity.status(200).body(new ApiResponse("Admin added successfully"));
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateAdmin(@PathVariable Integer id, @RequestBody @Valid Admin admin){
         adminService.updateAdmin(id, admin);
-        return ResponseEntity.status(200).body("Admin updated successfully");
+        return ResponseEntity.status(200).body(new ApiResponse("Admin updated successfully"));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAdmin(@PathVariable Integer id){
         adminService.deleteAdmin(id);
-        return ResponseEntity.status(200).body("Admin delete successfully");
+        return ResponseEntity.status(200).body(new ApiResponse("Admin delete successfully"));
     }
 
 }

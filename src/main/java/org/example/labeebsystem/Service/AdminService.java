@@ -13,6 +13,7 @@ import java.util.List;
 public class AdminService {
 
     private final AdminRepository adminRepository;
+    private final EmailService emailService;
 
     public List<Admin> getAllAdmins() {
         return adminRepository.findAll();
@@ -20,6 +21,7 @@ public class AdminService {
 
     public void addAdmin(Admin admin) {
         adminRepository.save(admin);
+        emailService.sendEmail(admin.getEmail(),"welcom to labeeb SYS","hello ");
     }
 
     public void updateAdmin(Integer id, Admin admin) {

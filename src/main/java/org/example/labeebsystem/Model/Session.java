@@ -1,10 +1,10 @@
 package org.example.labeebsystem.Model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +23,13 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotEmpty(message = "URL must be added")
     private String session_url;
+    @NotEmpty(message = "Date must be filled")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(columnDefinition = "date not null")
     private LocalDate date;
-    private String status;
+    @Pattern(regexp = "^(Attended|Absent)$")
+    private String attendance;
 
 }

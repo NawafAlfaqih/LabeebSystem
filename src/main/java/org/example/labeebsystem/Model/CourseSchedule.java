@@ -1,9 +1,8 @@
 package org.example.labeebsystem.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +23,20 @@ public class CourseSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotEmpty(message = "start Date must be filled")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(columnDefinition = "date not null")
     private LocalDate start_date;
+    @NotEmpty(message = "end Date must be filled")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(columnDefinition = "date not null")
     private LocalDate end_date;
+    @NotEmpty(message = "start time must be filled")
+    @Column(columnDefinition = "time not null")
     private LocalTime start_time;
+    @NotEmpty(message = "end time must be filled")
+    @Column(columnDefinition = "time not null")
     private LocalTime end_time;
+    @Pattern(regexp = "^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)$",message = "day must be 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday' or 'saturday'")
     private String day;//week days
 }
