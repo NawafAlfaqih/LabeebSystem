@@ -1,11 +1,11 @@
 package org.example.labeebsystem.Repository;
 
-import org.example.labeebsystem.Model.Admin;
+import org.example.labeebsystem.Model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Integer> {
+public interface TaskRepository extends JpaRepository<Task,Integer> {
 
-    Admin findAdminById(Integer id);
+    Task findTaskById(Integer id);
 }

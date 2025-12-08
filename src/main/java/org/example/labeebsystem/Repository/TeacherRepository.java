@@ -1,11 +1,11 @@
 package org.example.labeebsystem.Repository;
 
-import org.example.labeebsystem.Model.Admin;
+import org.example.labeebsystem.Model.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Integer> {
+public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 
-    Admin findAdminById(Integer id);
+    Teacher findTeacherById(Integer id);
 }
