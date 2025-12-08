@@ -20,8 +20,6 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer parentId;
-
     private Integer balance;
 
     private Integer totalGrade;

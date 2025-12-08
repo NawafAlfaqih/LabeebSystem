@@ -22,12 +22,6 @@ public class TaskFeedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer taskId;
-
-    private Integer fromUserId;
-
-    private Integer toStudentId;
-
     private String comment;
 
     private LocalDateTime createdAt;

@@ -22,9 +22,6 @@ public class TeacherReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer parentId;
-
-    private Integer teacherId;
 
     private Integer rating;
 
