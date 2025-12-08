@@ -26,5 +26,5 @@ public class Parent {
 
     private Integer password;
 
-   private Double balance;
+    private Double balance;
 }
