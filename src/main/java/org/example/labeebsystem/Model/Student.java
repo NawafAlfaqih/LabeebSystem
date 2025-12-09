@@ -21,6 +21,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+
     @PositiveOrZero(message = "Balance must be zero or positive")
     @Column(columnDefinition = "int default 0")
     private Integer balance;

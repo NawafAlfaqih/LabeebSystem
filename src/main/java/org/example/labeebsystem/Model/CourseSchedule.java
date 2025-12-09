@@ -28,16 +28,20 @@ public class CourseSchedule {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date not null")
     private LocalDate start_date;
+
     @NotEmpty(message = "end Date must be filled")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date not null")
     private LocalDate end_date;
+
     @NotEmpty(message = "start time must be filled")
     @Column(columnDefinition = "time not null")
     private LocalTime start_time;
+
     @NotEmpty(message = "end time must be filled")
     @Column(columnDefinition = "time not null")
     private LocalTime end_time;
+
     @Pattern(regexp = "^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)$",message = "day must be 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday' or 'saturday'")
     private String day;//week days
 
