@@ -21,7 +21,7 @@ public class AdminService {
 
     public void addAdmin(Admin admin) {
         adminRepository.save(admin);
-        emailService.sendEmail(admin.getEmail(),"welcom to labeeb SYS","hello ");
+        emailService.sendEmail(admin.getEmail(),"welcome to Labeeb SYS","hello ");
     }
 
     public void updateAdmin(Integer id, Admin admin) {
