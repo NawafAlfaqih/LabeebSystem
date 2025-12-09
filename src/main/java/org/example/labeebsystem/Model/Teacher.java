@@ -21,6 +21,11 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotEmpty(message = "name can't be empty")
+    @Size(min = 2,max = 15,message = "name must be 2 litters minimum, 15 litters maximum")
+    @Column(columnDefinition = "varchar(15) not null")
+    private String name;
+
     @NotBlank(message = "email cannot be blank.")
     @Column(columnDefinition = "varchar(40) not null unique")
     @Email
@@ -50,6 +55,10 @@ public class Teacher {
     @PositiveOrZero(message = "rating must be positive or zero")
     @Max(value = 5)
     private Integer rating;
+
+    @Pattern(regexp = "^(pending|accepted|rejected)$")
+    @Column(columnDefinition = "varchar(15) not null")
+    private String ActiveStatus;
 
     @ManyToOne(optional = false)
     @JsonIgnore
