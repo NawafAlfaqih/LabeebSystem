@@ -20,4 +20,6 @@ public class TestGpt {
         String response = chatGPTService.askChatGPT(ask);
         return ResponseEntity.status(200).body(new ApiResponse(response));
     }
+
+
 }
