@@ -20,6 +20,10 @@ public class Parent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String name;
+
+    private String phoneNumber;
+
     @Email(message = "Email must be a valid email format")
     @NotEmpty(message = "Email cannot be empty")
     private String Email;

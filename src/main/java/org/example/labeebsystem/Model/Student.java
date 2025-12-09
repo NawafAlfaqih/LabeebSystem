@@ -21,15 +21,19 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String name;
+
     @PositiveOrZero(message = "Balance must be zero or positive")
     @Column(columnDefinition = "int default 0")
     private Integer balance;
-
 
     @Min(value = 0, message = "Total grade must be 0 or more")
     @Max(value = 100, message = "Total grade cannot be more 100")
     @Column(columnDefinition = "int default 0")
     private Integer totalGrade; // leaderboard in one subject
+
+    @Positive
+    private Integer age;
 
     @ManyToOne
     @JsonIgnore

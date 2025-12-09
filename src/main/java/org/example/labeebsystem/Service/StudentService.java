@@ -10,7 +10,6 @@ import org.example.labeebsystem.Repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +33,42 @@ public class StudentService {
 
         student.setParent(parent);
         student.setBalance(0);
+        student.setTotalGrade(0);
         studentRepository.save(student);
+    }
+
+    public void updateStudent(Integer id, Integer parentId, Student student) {
+        Parent parent = parentRepository.findParentById(parentId);
+        if (parent == null)
+            throw new ApiException("Parent was not found");
+
+        Student oldStudent = studentRepository.findStudentById(id);
+        if (oldStudent == null)
+            throw new ApiException("Student was not found");
+
+        if (studentRepository.findStudentByParent(parent) == null)
+            throw new ApiException("You can only edit your children associated with your account");
+
+        oldStudent.setName(student.getName());
+        oldStudent.setBalance(student.getBalance());
+        oldStudent.setTotalGrade(student.getTotalGrade());
+        oldStudent.setAge(student.getAge());
+
+        studentRepository.save(oldStudent);
+    }
+
+    public void deleteStudent(Integer parentId, Integer id) {
+        Parent parent = parentRepository.findParentById(parentId);
+        if (parent == null)
+            throw new ApiException("Parent was not found");
+
+        Student student = studentRepository.findStudentById(id);
+        if (student == null)
+            throw new ApiException("Student was not found");
+
+        if (studentRepository.findStudentByParent(parent) == null) //not parent
+            throw new ApiException("You can only edit your children associated with your account");
+
+        studentRepository.delete(student);
     }
 }
