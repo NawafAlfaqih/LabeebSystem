@@ -42,15 +42,4 @@ public class CourseController {
         return ResponseEntity.status(200).body(new ApiResponse("Course deleted successfully"));
     }
 
-    @PutMapping("/assign-schedule/{courseId}/{scheduleId}")
-    public ResponseEntity<?> assignCourseSchedule(@PathVariable Integer courseId, @PathVariable Integer scheduleId) {
-        courseService.assignCourseSchedule(courseId, scheduleId);
-        return ResponseEntity.status(200).body(new ApiResponse("Schedule assigned successfully"));
-    }
-
-    @PutMapping("/assign-session/{courseId}/{sessionId}")
-    public ResponseEntity<?> assignSessionToCourse(@PathVariable Integer courseId, @PathVariable Integer sessionId) {
-        courseService.assignSessionToCourse(courseId, sessionId);
-        return ResponseEntity.status(200).body(new ApiResponse("Session assigned successfully"));
-    }
 }

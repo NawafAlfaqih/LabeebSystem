@@ -63,37 +63,4 @@ public class CourseService {
         courseRepository.delete(course);
     }
 
-    public void assignCourseSchedule(Integer courseId, Integer scheduleId) {
-        Course course = courseRepository.findCourseById(courseId);
-        if (course == null)
-            throw new ApiException("Course not found");
-        CourseSchedule schedule = courseScheduleRepository.findCourseScheduleById(scheduleId);
-        if (schedule == null)
-            throw new ApiException("Schedule not found");
-        if (schedule.getCourse() != null)
-            throw new ApiException("Schedule already assigned to a course");
-
-        schedule.setCourse(course);
-        course.setCourseSchedule(schedule);
-
-        courseScheduleRepository.save(schedule);
-        courseRepository.save(course);
-    }
-
-    public void assignSessionToCourse(Integer courseId, Integer sessionId) {
-
-        Course course = courseRepository.findCourseById(courseId);
-        if (course == null)
-            throw new ApiException("Course not found");
-
-        Session session = sessionRepository.findSessionById(sessionId);
-        if (session == null)
-            throw new ApiException("Session not found");
-
-        if (session.getCourse() != null)
-            throw new ApiException("Session is already assigned to a course");
-
-        session.setCourse(course);
-        sessionRepository.save(session);
-    }
 }
