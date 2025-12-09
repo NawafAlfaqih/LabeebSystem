@@ -35,5 +35,10 @@ public class TeacherReview {
 
     @ManyToOne
     @JsonIgnore
+    private Parent parent;
+
+
+    @ManyToOne
+    @JsonIgnore
     private Teacher teacher;
 }
