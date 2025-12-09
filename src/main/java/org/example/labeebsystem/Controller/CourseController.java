@@ -8,12 +8,21 @@ import org.example.labeebsystem.Service.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/course")
 public class CourseController {
 
     private final CourseService courseService;
+
+
+@GetMapping("/get")
+    public ResponseEntity<?> getAllCourses() {
+        List<Course> courses = courseService.getAllCourses();
+        return ResponseEntity.status(200).body(courses);
+    }
 
     @PostMapping("/add/{teacherId}")
     public ResponseEntity<?> addCourse(@PathVariable Integer teacherId, @RequestBody @Valid Course course) {

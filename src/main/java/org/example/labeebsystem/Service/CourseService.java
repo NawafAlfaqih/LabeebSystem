@@ -12,6 +12,8 @@ import org.example.labeebsystem.Repository.SessionRepository;
 import org.example.labeebsystem.Repository.TeacherRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CourseService {
@@ -20,6 +22,13 @@ public class CourseService {
     private final TeacherRepository teacherRepository;
     private final CourseScheduleRepository courseScheduleRepository;
     private final SessionRepository sessionRepository;
+
+
+
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
+    }
+
 
     public void addCourse(Integer teacherId, Course course) {
 
