@@ -1,5 +1,6 @@
 package org.example.labeebsystem.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Setter
@@ -24,4 +27,8 @@ public class Category {
     @Pattern(regexp = "^[A-Za-z]+(?: [A-Za-z]+)*$",message = "name must be capital or small litters")
     @Column(columnDefinition = "varchar(20) not null")
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private Set<Teacher> teachers;
 }

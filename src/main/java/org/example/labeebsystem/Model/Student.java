@@ -1,9 +1,7 @@
 package org.example.labeebsystem.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,4 +27,8 @@ public class Student {
     @Min(value = 0, message = "Total grade must be 0 or more")
     @Max(value = 100, message = "Total grade cannot be more 100")
     private Integer totalGrade;
+
+    @ManyToOne
+    @JsonIgnore
+    private Parent parent;
 }

@@ -1,14 +1,13 @@
 package org.example.labeebsystem.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,4 +32,7 @@ public class Parent {
     @NotNull(message = "Balance cannot be null")
     @PositiveOrZero(message = "Balance must be zero or positive")
     private Double balance;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
+    private Set<Student> students;
 }

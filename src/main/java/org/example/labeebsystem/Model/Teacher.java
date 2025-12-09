@@ -1,5 +1,6 @@
 package org.example.labeebsystem.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -43,8 +44,11 @@ public class Teacher {
     @PositiveOrZero(message = "balance must be positive or zero")
     private Double balance;
 
-    @Column(columnDefinition = "int default")
+    @Column(columnDefinition = "int default 0")
     @PositiveOrZero(message = "rating must be positive or zero")
     @Max(value = 5)
     private Integer rating;
+
+    @ManyToOne(optional = false)
+    private Category category;
 }
