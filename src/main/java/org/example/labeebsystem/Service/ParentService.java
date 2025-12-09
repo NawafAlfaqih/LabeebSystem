@@ -2,11 +2,13 @@ package org.example.labeebsystem.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
+import org.example.labeebsystem.DTO_out.ParentDTOout;
 import org.example.labeebsystem.Model.Parent;
 import org.example.labeebsystem.Repository.AdminRepository;
 import org.example.labeebsystem.Repository.ParentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,11 +18,21 @@ public class ParentService {
     private final ParentRepository parentRepository;
     private final AdminRepository adminRepository;
 
-    public List<Parent> getAllParents(Integer adminId) {
+    public List<ParentDTOout> getAllParents(Integer adminId) {
         if (adminRepository.findAdminById(adminId) == null)
             throw new ApiException("Admin was not found");
 
-        return parentRepository.findAll();
+        List<Parent> parentList = parentRepository.findAll();
+        ArrayList<ParentDTOout> parentDTOs = new ArrayList<>();
+        for (Parent p: parentList) {
+            ParentDTOout dto = new ParentDTOout(
+                    p.getId(),
+                    p.getBalance(),
+                    p.getEmail()
+            );
+            parentDTOs.add(dto);
+        }
+        return parentDTOs;
     }
 
     public void addParent(Parent parent) {
