@@ -1,5 +1,6 @@
 package org.example.labeebsystem.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,11 @@ public class Task {
     @Column(columnDefinition = "varchar(256) not null")
     private String description;
 
+    @NotNull(message = "createdAt cannot be null.")
+    @FutureOrPresent(message = "createdAt cannot be in the past.")
+    @Column(columnDefinition = "datetime not null")
+    private LocalDateTime createdAt;
+
     @NotNull(message = "dueDate cannot be null.")
     @FutureOrPresent(message = "dueDate cannot be in the past.")
     @Column(columnDefinition = "datetime not null")
@@ -41,4 +47,21 @@ public class Task {
     @Column(columnDefinition = "varchar(7) not null")
     private String status; //Pending - Uploaded - Approved - Rejected
 
+    private Integer points;
+
+    @ManyToOne
+    @JsonIgnore
+    private Student student;
+
+    @ManyToOne
+    @JsonIgnore
+    private Teacher teacher;
+
+    @ManyToOne
+    @JsonIgnore
+    private Parent parent;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "task")
+    @PrimaryKeyJoinColumn
+    private TaskFeedback taskFeedback;
 }

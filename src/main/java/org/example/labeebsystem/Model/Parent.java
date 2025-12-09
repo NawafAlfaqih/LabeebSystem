@@ -35,4 +35,7 @@ public class Parent {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     private Set<Student> students;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
+    private Set<Task> tasks;
 }

@@ -1,9 +1,7 @@
 package org.example.labeebsystem.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,4 +32,8 @@ public class TeacherReview {
 
     @NotNull(message = "date cannot be null")
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JsonIgnore
+    private Teacher teacher;
 }

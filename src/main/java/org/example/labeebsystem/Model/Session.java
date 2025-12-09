@@ -2,6 +2,7 @@ package org.example.labeebsystem.Model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -25,11 +26,26 @@ public class Session {
 
     @NotEmpty(message = "URL must be added")
     private String session_url;
+
     @NotEmpty(message = "Date must be filled")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date not null")
     private LocalDate date;
+
     @Pattern(regexp = "^(Attended|Absent)$")
     private String attendance;
+
+    @ManyToOne
+    @JsonIgnore
+    private Student student;
+
+    //if we needed teacher in service
+//    @ManyToOne
+//    @JsonIgnore
+//    private Teacher teacher;
+
+    @ManyToOne
+    @JsonIgnore
+    private Course course;
 
 }

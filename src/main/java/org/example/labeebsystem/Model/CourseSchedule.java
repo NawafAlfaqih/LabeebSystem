@@ -1,6 +1,7 @@
 package org.example.labeebsystem.Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -39,4 +40,9 @@ public class CourseSchedule {
     private LocalTime end_time;
     @Pattern(regexp = "^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)$",message = "day must be 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday' or 'saturday'")
     private String day;//week days
+
+    @OneToOne
+    @MapsId
+    @JsonIgnore
+    private Course course;
 }

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,16 +21,29 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull(message = "Balance cannot be null")
     @PositiveOrZero(message = "Balance must be zero or positive")
+    @Column(columnDefinition = "int default 0")
     private Integer balance;
 
-    @NotNull(message = "Total grade cannot be null")
+
     @Min(value = 0, message = "Total grade must be 0 or more")
     @Max(value = 100, message = "Total grade cannot be more 100")
-    private Integer totalGrade;
+    @Column(columnDefinition = "int default 0")
+    private Integer totalGrade; // leaderboard in one subject
 
     @ManyToOne
     @JsonIgnore
     private Parent parent;
+
+    @OneToMany(mappedBy = "student")
+    private Set<Task> tasks;
+
+    @OneToMany(mappedBy = "student")
+    private Set<Course> courses;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
+    private Set<TaskFeedback> taskFeedbacks;
+
+    @OneToMany(mappedBy = "student")
+    private Set<Session> sessions;
 }

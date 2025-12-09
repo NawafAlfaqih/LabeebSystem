@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -50,5 +52,24 @@ public class Teacher {
     private Integer rating;
 
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Category category;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "teacher")
+    private Set<Task> tasks;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "teacher")
+    private Set<TeacherReview> teacherReviews;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "teacher")
+    private Set<Course> courses;
+
+    @OneToMany(mappedBy = "teacher")
+    private Set<TaskFeedback> taskFeedbacks;
+
+    //if we needed teacher in service
+//    @OneToMany(mappedBy = "teacher")
+//    private Set<Session> sessions;
+
+
 }

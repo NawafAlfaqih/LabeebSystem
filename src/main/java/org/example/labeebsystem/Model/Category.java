@@ -1,9 +1,7 @@
 package org.example.labeebsystem.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +27,5 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    @JsonIgnore
     private Set<Teacher> teachers;
 }
