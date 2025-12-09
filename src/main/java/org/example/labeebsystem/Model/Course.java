@@ -2,6 +2,7 @@ package org.example.labeebsystem.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class Course {
 
     private Double price;
 
-
+    @NotEmpty(message = "description must be filled")
     private String description;
 
     @ManyToOne
