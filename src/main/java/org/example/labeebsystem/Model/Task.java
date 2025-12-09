@@ -30,10 +30,13 @@ public class Task {
     @Column(columnDefinition = "varchar(256) not null")
     private String description;
 
-    @NotNull(message = "createdAt cannot be null.")
     @FutureOrPresent(message = "createdAt cannot be in the past.")
     @Column(columnDefinition = "datetime not null")
     private LocalDateTime createdAt;
+
+    @Pattern(regexp = "^(Teacher|Parent)$")
+    @Column(columnDefinition = "varchar(10) not null")
+    private String createdBy;
 
     @NotNull(message = "dueDate cannot be null.")
     @FutureOrPresent(message = "dueDate cannot be in the past.")
