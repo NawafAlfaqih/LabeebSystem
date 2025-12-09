@@ -43,6 +43,8 @@ public class TaskService {
             throw new ApiException("Teacher or Student not in the same Course");
 
         task.setGrade(0);
+        task.setPoints(0);
+        task.setStatus("Pending");
         task.setCreatedAt(LocalDateTime.now());
         task.setParent(student.getParent());
         task.setCreatedBy("Teacher");
@@ -66,10 +68,61 @@ public class TaskService {
             throw new ApiException("Teacher or Student not in the same Course");
 
         task.setGrade(0);
+        task.setPoints(0);
+        task.setStatus("Pending");
         task.setCreatedAt(LocalDateTime.now());
         task.setParent(student.getParent());
         task.setCreatedBy("Parent");
         taskRepository.save(task);
+    }
+
+    public void updateTask(Integer taskId, Task task, Integer teacherId) {
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null)
+            throw new ApiException("Teacher not found");
+
+        Task oldTask = taskRepository.findTaskById(taskId);
+        if (oldTask == null)
+            throw new ApiException("Task not found");
+
+        if (task.getTeacher().equals(teacher))
+            throw new ApiException("Teacher cannot update task");
+
+        oldTask.setDescription(task.getDescription());
+        oldTask.setDueDate(task.getDueDate());
+        oldTask.setFileAnswerUrl(task.getFileAnswerUrl());
+
+        taskRepository.save(oldTask);
+    }
+
+    public void deleteTeacherTask(Integer id, Integer teacherId) {
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null)
+            throw new ApiException("Teacher not found");
+
+        Task task = taskRepository.findTaskById(id);
+        if (task == null)
+            throw new ApiException("Task not found");
+
+        if (task.getTeacher().equals(teacher))
+            throw new ApiException("Teacher cannot delete task");
+
+        taskRepository.delete(task);
+    }
+
+    public void deleteParentTask(Integer id, Integer parentId) {
+        Parent parent = parentRepository.findParentById(parentId);
+        if (parent == null)
+            throw new ApiException("Parent not found");
+
+        Task task = taskRepository.findTaskById(id);
+        if (task == null)
+            throw new ApiException("Task not found");
+
+        if (task.getParent().equals(parent))
+            throw new ApiException("Parent cannot delete task");
+
+        taskRepository.delete(task);
     }
 
 }

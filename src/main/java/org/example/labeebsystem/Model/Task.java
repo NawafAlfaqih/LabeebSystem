@@ -50,6 +50,8 @@ public class Task {
     @Column(columnDefinition = "varchar(7) not null")
     private String status; //Pending - Uploaded - Approved - Rejected
 
+    @Column(columnDefinition = "int default 0")
+    @PositiveOrZero(message = "points must be positive or zero")
     private Integer points;
 
     @ManyToOne
