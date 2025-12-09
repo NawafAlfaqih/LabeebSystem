@@ -1,8 +1,8 @@
 package org.example.labeebsystem.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.dataformat.yaml.util.StringQuotingChecker;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +21,12 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull(message = "Course title must be filled")
+    private String title;
+
+
     private Double price;
+
 
     private String description;
 
@@ -39,5 +44,5 @@ public class Course {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "course")
     @PrimaryKeyJoinColumn
     private CourseSchedule courseSchedule;
-
 }
+

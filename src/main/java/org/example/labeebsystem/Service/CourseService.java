@@ -18,9 +18,6 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final TeacherRepository teacherRepository;
-    private final CourseScheduleRepository courseScheduleRepository;
-    private final SessionRepository sessionRepository;
-
 
 
     public List<Course> getAllCourses() {
@@ -28,6 +25,7 @@ public class CourseService {
     }
 
     public void addCourse(Integer teacherId, Course course) {
+
         Teacher teacher = teacherRepository.findTeacherById(teacherId);
         if (teacher == null)
             throw new ApiException("Teacher not found");
@@ -37,15 +35,23 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+
     public void updateCourse(Integer courseId, Course updatedCourse) {
 
         Course course = courseRepository.findCourseById(courseId);
         if (course == null)
             throw new ApiException("Course not found");
-        course.setPrice(updatedCourse.getPrice());
-        course.setDescription(updatedCourse.getDescription());
+        if (updatedCourse.getTitle() != null)
+            course.setTitle(updatedCourse.getTitle());
+
+        if (updatedCourse.getPrice() != null)
+            course.setPrice(updatedCourse.getPrice());
+
+        if (updatedCourse.getDescription() != null)
+            course.setDescription(updatedCourse.getDescription());
         courseRepository.save(course);
     }
+
 
     public void deleteCourse(Integer id) {
         Course course = courseRepository.findCourseById(id);
@@ -53,5 +59,4 @@ public class CourseService {
             throw new ApiException("Course not found");
         courseRepository.delete(course);
     }
-
 }
