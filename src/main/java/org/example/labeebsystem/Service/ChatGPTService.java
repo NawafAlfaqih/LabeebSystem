@@ -12,14 +12,8 @@ public class ChatGPTService {
     private final OpenAiChatModel chatModel;
 
     public String askChatGPT(String promptText) {
-
-        try {
-            UserMessage message = new UserMessage(promptText);
-            Prompt prompt = new Prompt(message);
-            return chatModel.call(prompt).getResult().getOutput().getText();
-
-        } catch (Exception e) {
-            return "AI Error: " + e.getMessage();
-        }
+        UserMessage message = new UserMessage(promptText);
+        Prompt prompt = new Prompt(message);
+        return chatModel.call(prompt).getResult().getOutput().getText();
     }
 }
