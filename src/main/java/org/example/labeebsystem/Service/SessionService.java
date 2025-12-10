@@ -9,8 +9,11 @@ import org.example.labeebsystem.Repository.CourseRepository;
 import org.example.labeebsystem.Repository.SessionRepository;
 import org.example.labeebsystem.Repository.StudentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -20,6 +23,7 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final CourseRepository courseRepository;
 private final AdminRepository adminRepository;
+    private final EmailService emailService;
 
 private final StudentRepository studentRepository;
 
@@ -114,5 +118,43 @@ public List<Session> getAllSessions(Integer adminId) {
                 percentage
         );
     }
+
+    //تجيه رساله قبل الدرس بساعه على ايميله
+    @Scheduled(fixedRate = 3600000)
+    public void notifyUpcomingSessions() {
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        System.out.println("Checking for upcoming session");
+
+        List<Session> sessions = sessionRepository.findAll();
+        for (Session session : sessions) {
+
+            if (session.getDate().equals(today)) {
+                Course course = session.getCourse();
+                CourseSchedule schedule = course.getCourseSchedule();
+                LocalTime classTime = schedule.getStart_time();
+
+                long minutesDifference = Duration.between(now, classTime).toMinutes();
+                if (minutesDifference == 60) {
+
+                    Student student = session.getStudent();
+                    Parent parent = student.getParent();
+                    String message =
+                            "Reminder: \n" +
+                                    "Student Name: " + student.getName() + "\n" +
+                                    "Course: " + course.getTitle() + "\n" +
+                                    "Date: " + session.getDate() + "\n" +
+                                    "Time: " + classTime + "\n" +
+                                    "Note: Your class starts in 1 hour";
+
+                    emailService.sendEmail(parent.getEmail(), "Upcoming Session Alert", message);
+                    System.out.println("Email sent to parent of: " + student.getName());
+                }
+            }
+        }
+    }
+
+
+
 
 }

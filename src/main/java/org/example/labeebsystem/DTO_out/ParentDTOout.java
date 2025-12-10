@@ -16,7 +16,7 @@ public class ParentDTOout {
 
     private String phoneNumber;
 
-    private Integer balance;
+    private Double balance;
 
     private String email;
 

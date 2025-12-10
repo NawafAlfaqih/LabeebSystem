@@ -39,7 +39,7 @@ public class ParentService {
     }
 
     public void addParent(Parent parent) {
-        parent.setBalance(0);
+        parent.setBalance(0.0);
         parentRepository.save(parent);
     }
 
