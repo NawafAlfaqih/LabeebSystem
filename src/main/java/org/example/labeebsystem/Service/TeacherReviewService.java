@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,16 +31,29 @@ public class TeacherReviewService {
         return allReviews;
     }
 
+    // Fix: when adding new review, check the active status (if accepted).
+    // and updates the teachers Rating
     public void addTeacherReview(Integer parentId, Integer teacherId, TeacherReview teacherReview){
         Teacher teacher = teacherRepository.findTeacherById(teacherId);
         Parent parent=parentRepository.findParentById(parentId);
         if(teacher==null||parent==null){
             throw new ApiException("teacher or parent ID was not found");
         }
+        if(!(teacher.getActiveStatus().equalsIgnoreCase("accepted"))){
+            throw new ApiException("teacher is not Active");
+        }
         teacherReview.setTeacher(teacher);
         teacherReview.setParent(parent);
         teacherReview.setCreatedAt(LocalDateTime.now());
         teacherReviewRepository.save(teacherReview);
+        teacher.getTeacherReviews().add(teacherReview);
+        Set<TeacherReview> reviews = teacher.getTeacherReviews();
+        int total = reviews.stream()
+                .mapToInt(TeacherReview::getRating)
+                .sum();
+        int avg = total / reviews.size();
+        teacher.setRating(avg);
+        teacherRepository.save(teacher);
     }
 
     public void updateTeacherReview(Integer teacherReviewID,TeacherReview teacherReview){

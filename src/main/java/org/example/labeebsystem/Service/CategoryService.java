@@ -33,7 +33,7 @@ public class CategoryService {
         if(admin==null){
             throw new ApiException("admin ID not found");
         }
-        Category oldCategory=categoryRepository.findCategoriesById(id);
+        Category oldCategory=categoryRepository.findCategoryById(id);
         if(oldCategory==null){
             throw new ApiException("category ID not found");
         }
@@ -46,7 +46,7 @@ public class CategoryService {
         if(admin==null){
             throw new ApiException("admin ID not found");
         }
-        Category category=categoryRepository.findCategoriesById(id);
+        Category category=categoryRepository.findCategoryById(id);
         if(category==null){
             throw new ApiException("category ID not found");
         }

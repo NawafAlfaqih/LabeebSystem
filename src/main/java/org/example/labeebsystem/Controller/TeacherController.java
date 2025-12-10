@@ -36,4 +36,14 @@ public class TeacherController {
         return ResponseEntity.status(200).body(new ApiResponse("teacher deleted successfully"));
     }
 
+    // it will return only the active teachers
+    @GetMapping("/get-by-category/{categoryId}")
+    public ResponseEntity<?> getTeachersByCategory(@PathVariable Integer categoryId){
+        return ResponseEntity.status(200).body(teacherService.getTeachersByCategory(categoryId));
+    }
+
+    @GetMapping("/get-by-rating")
+    public ResponseEntity<?> getTeachersOrderedByRating(){
+        return ResponseEntity.status(200).body(teacherService.getTeachersOrderedByRating());
+    }
 }
