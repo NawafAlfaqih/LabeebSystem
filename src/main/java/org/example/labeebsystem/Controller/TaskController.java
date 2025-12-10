@@ -1,6 +1,7 @@
 package org.example.labeebsystem.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.labeebsystem.API.ApiResponse;
 import org.example.labeebsystem.Model.Task;
 import org.example.labeebsystem.Service.TaskService;
 import org.springframework.http.ResponseEntity;
@@ -53,5 +54,12 @@ public class TaskController {
     public ResponseEntity<?> getExpiredTasks(@PathVariable Integer teacherId) {
         return ResponseEntity.status(200).body(taskService.getExpiredUncorrectedTasks(teacherId));
     }
+//هذي الدرجة حقت الطالب مع خصم الفلوس
+    @PutMapping("/correct/{taskId}/{teacherId}/{grade}")
+    public ResponseEntity<?> correctTask(@PathVariable Integer taskId, @PathVariable Integer teacherId, @PathVariable Integer grade) {
+        taskService.correctTask(taskId, teacherId, grade);
+        return ResponseEntity.status(200).body(new ApiResponse("Task corrected successfully"));
+    }
+
 
 }

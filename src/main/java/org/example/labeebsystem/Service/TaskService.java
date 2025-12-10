@@ -147,4 +147,44 @@ public class TaskService {
             throw new ApiException("No out date tasks found");
         return result;
     }
+
+//هذي اذا صحح الاستاذ، تتعدل حالته وينخصم فلوس
+    public void correctTask(Integer taskId, Integer teacherId, Integer grade) {
+
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null)
+            throw new ApiException("Teacher not found");
+
+        Task task = taskRepository.findTaskById(taskId);
+        if (task == null)
+            throw new ApiException("Task not found");
+
+        if (!task.getTeacher().getId().equals(teacherId))
+            throw new ApiException("You are not allowed to correct this task");
+
+        if (task.getStatus().equals("Approved"))
+            throw new ApiException("This task is already corrected");
+        task.setGrade(grade);
+        task.setStatus("Approved");
+
+        double amount = grade / 10.0;
+
+        Parent parent = task.getParent();
+        Student student = task.getStudent();
+
+        if (parent == null || student == null)
+            throw new ApiException("Parent or Student not found");
+
+        if (parent.getBalance() < amount)
+            throw new ApiException("Parent balance is not enough");
+
+        parent.setBalance(parent.getBalance() - amount);
+        student.setBalance(student.getBalance() + amount);
+
+        parentRepository.save(parent);
+        studentRepository.save(student);
+        taskRepository.save(task);
+    }
+
+
 }

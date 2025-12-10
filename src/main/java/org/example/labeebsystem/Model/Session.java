@@ -32,7 +32,7 @@ public class Session {
     @Column(columnDefinition = "date not null")
     private LocalDate date;
 
-    //اضفت الlate
+
     @Pattern(regexp = "^(Attended|Absent|Late)$")
     private String attendance;
 

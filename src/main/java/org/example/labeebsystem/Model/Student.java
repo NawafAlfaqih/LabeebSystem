@@ -24,8 +24,8 @@ public class Student {
     private String name;
 
     @PositiveOrZero(message = "Balance must be zero or positive")
-    @Column(columnDefinition = "int default 0")
-    private Integer balance;
+    @Column(columnDefinition = "double default 0")
+    private Double balance;
 
     @Min(value = 0, message = "Total grade must be 0 or more")
     @Max(value = 100, message = "Total grade cannot be more 100")

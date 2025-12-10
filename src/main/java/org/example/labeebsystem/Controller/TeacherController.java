@@ -46,4 +46,6 @@ public class TeacherController {
     public ResponseEntity<?> getTeachersOrderedByRating(){
         return ResponseEntity.status(200).body(teacherService.getTeachersOrderedByRating());
     }
+
+
 }

@@ -35,7 +35,7 @@ public class Parent {
 
     @PositiveOrZero(message = "Balance must be zero or positive")
     @Column(columnDefinition = "int default 0")
-    private Integer balance;
+    private Double balance;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     private Set<Student> students;

@@ -32,7 +32,7 @@ public class StudentService {
             throw new ApiException("Parent was not found");
 
         student.setParent(parent);
-        student.setBalance(0);
+        student.setBalance(0.0);
         student.setTotalGrade(0);
         studentRepository.save(student);
     }
