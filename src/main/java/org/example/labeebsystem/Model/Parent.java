@@ -26,16 +26,16 @@ public class Parent {
 
     @Email(message = "Email must be a valid email format")
     @NotEmpty(message = "Email cannot be empty")
-    private String Email;
+    private String email;
 
     @NotEmpty(message = "Password cannot be empty")
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$",
             message = "Password must contain uppercase, lowercase, number and be at least 8 characters")
     private String password;
 
-    @NotNull(message = "Balance cannot be null")
     @PositiveOrZero(message = "Balance must be zero or positive")
-    private Double balance;
+    @Column(columnDefinition = "int default 0")
+    private Integer balance;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     private Set<Student> students;

@@ -27,8 +27,11 @@ public class ParentService {
         for (Parent p: parentList) {
             ParentDTOout dto = new ParentDTOout(
                     p.getId(),
+                    p.getName(),
+                    p.getPhoneNumber(),
                     p.getBalance(),
-                    p.getEmail()
+                    p.getEmail(),
+                    p.getStudents()
             );
             parentDTOs.add(dto);
         }
@@ -36,7 +39,7 @@ public class ParentService {
     }
 
     public void addParent(Parent parent) {
-        parent.setBalance(0.0);
+        parent.setBalance(0);
         parentRepository.save(parent);
     }
 
