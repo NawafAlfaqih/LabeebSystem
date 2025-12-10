@@ -39,4 +39,11 @@ public class ParentController {
         parentService.deleteParent(id);
         return ResponseEntity.status(200).body(new ApiResponse("Parent delete successfully"));
     }
+//الاب يضيف رصيد
+    @PutMapping("/add-balance/{parentId}/{amount}")
+    public ResponseEntity<?> addBalance(@PathVariable Integer parentId, @PathVariable Integer amount) {
+        parentService.addBalance(parentId, amount);
+        return ResponseEntity.status(200).body("Balance updated successfully");
+    }
+
 }

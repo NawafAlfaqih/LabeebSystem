@@ -61,4 +61,14 @@ public class ParentService {
 
         parentRepository.delete(parent);
     }
+//الاب يضيف رصيد
+    public void addBalance(Integer parentId, Integer amount) {
+        Parent parent = parentRepository.findParentById(parentId);
+        if (parent == null) {
+            throw new ApiException("Parent not found");
+        }
+        parent.setBalance(parent.getBalance() + amount);
+        parentRepository.save(parent);
+    }
+
 }
