@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
 import org.example.labeebsystem.DTO_out.AttendanceReportDTO;
 import org.example.labeebsystem.Model.*;
-import org.example.labeebsystem.Repository.AdminRepository;
-import org.example.labeebsystem.Repository.CourseRepository;
-import org.example.labeebsystem.Repository.SessionRepository;
-import org.example.labeebsystem.Repository.StudentRepository;
+import org.example.labeebsystem.Repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -21,7 +18,7 @@ import java.util.List;
 public class SessionService {
 
     private final SessionRepository sessionRepository;
-    private final CourseRepository courseRepository;
+    private final CourseScheduleRepository courseScheduleRepository;
 private final AdminRepository adminRepository;
     private final EmailService emailService;
 
@@ -37,22 +34,18 @@ public List<Session> getAllSessions(Integer adminId) {
 }
 
 
-    public void addSession(Integer courseId, Session session) {
+    public void addSession(Integer courseScheduleId, Session session) {
 
-        Course course = courseRepository.findCourseById(courseId);
-        if (course == null)
-            throw new ApiException("Course not found");
-        CourseSchedule schedule = course.getCourseSchedule();
-
+        CourseSchedule schedule = courseScheduleRepository.findCourseScheduleById(courseScheduleId);
         if (schedule == null)
-            throw new ApiException("Course does not have a schedule yet cannot add session");
+            throw new ApiException("Course Schedule not found");
 
         LocalDate today = LocalDate.now();
         if (today.isBefore(schedule.getStart_date()) || today.isAfter(schedule.getEnd_date()))
             throw new ApiException("Cannot create session today, date is outside the course schedule");
 
         session.setDate(today);
-        session.setCourse(course);
+        session.setCourseSchedule(schedule);
         sessionRepository.save(session);
     }
 
@@ -69,7 +62,7 @@ public List<Session> getAllSessions(Integer adminId) {
             session.setAttendance(updatedSession.getAttendance());
 
         if (updatedSession.getDate() != null) {
-            CourseSchedule schedule = session.getCourse().getCourseSchedule();
+            CourseSchedule schedule = session.getCourseSchedule();
             if (updatedSession.getDate().isBefore(schedule.getStart_date()) || updatedSession.getDate().isAfter(schedule.getEnd_date()))
                 throw new ApiException("Updated date is outside the course schedule");
             session.setDate(updatedSession.getDate());
@@ -86,11 +79,11 @@ public List<Session> getAllSessions(Integer adminId) {
 
 
     //الحضور التفصيلي
-    public AttendanceReportDTO getAttendanceReport(Integer studentId, Integer courseId) {
+    public AttendanceReportDTO getAttendanceReport(Integer studentId, Integer scheduleId) {
 
-        Course course = courseRepository.findCourseById(courseId);
-        if (course == null)
-            throw new ApiException("Course not found");
+        CourseSchedule schedule = courseScheduleRepository.findCourseScheduleById(scheduleId);
+        if (schedule == null)
+            throw new ApiException("Course Schedule not found");
 
         Student student = studentRepository.findStudentById(studentId);
         if (student == null)
@@ -98,7 +91,7 @@ public List<Session> getAllSessions(Integer adminId) {
         List<Session> sessions = sessionRepository.findAll();
         int total = 0, attended = 0, absent = 0, late = 0;
         for (Session s : sessions) {
-            if (s.getCourse().getId().equals(courseId) && s.getStudent().getId().equals(studentId)) {
+            if (s.getCourseSchedule().getId().equals(scheduleId) && s.getStudent().getId().equals(studentId)) {
                 total++;
                 if (s.getAttendance().equals("Attended")) attended++;
                 else if (s.getAttendance().equals("Absent")) absent++;
@@ -110,7 +103,7 @@ public List<Session> getAllSessions(Integer adminId) {
             percentage = (attended * 100.0) / total;
         }
         return new AttendanceReportDTO(
-                course.getTitle(),
+                schedule.getCourse().getTitle(),
                 total,
                 attended,
                 absent,
@@ -130,8 +123,7 @@ public List<Session> getAllSessions(Integer adminId) {
         for (Session session : sessions) {
 
             if (session.getDate().equals(today)) {
-                Course course = session.getCourse();
-                CourseSchedule schedule = course.getCourseSchedule();
+                CourseSchedule schedule = session.getCourseSchedule();
                 LocalTime classTime = schedule.getStart_time();
 
                 long minutesDifference = Duration.between(now, classTime).toMinutes();
@@ -142,7 +134,7 @@ public List<Session> getAllSessions(Integer adminId) {
                     String message =
                             "Reminder: \n" +
                                     "Student Name: " + student.getName() + "\n" +
-                                    "Course: " + course.getTitle() + "\n" +
+                                    "Course: " + schedule.getCourse().getTitle() + "\n" +
                                     "Date: " + session.getDate() + "\n" +
                                     "Time: " + classTime + "\n" +
                                     "Note: Your class starts in 1 hour";

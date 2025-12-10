@@ -43,7 +43,7 @@ public class Student {
     private Set<Task> tasks;
 
     @OneToMany(mappedBy = "student")
-    private Set<Course> courses;
+    private Set<CourseSchedule> courseSchedules;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private Set<TaskFeedback> taskFeedbacks;

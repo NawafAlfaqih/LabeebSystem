@@ -60,7 +60,7 @@ public class Teacher {
     @Column(columnDefinition = "varchar(15) not null")
     private String ActiveStatus;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JsonIgnore
     private Category category;
 

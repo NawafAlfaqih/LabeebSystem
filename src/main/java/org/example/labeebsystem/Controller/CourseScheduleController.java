@@ -21,10 +21,10 @@ public class CourseScheduleController {
         return ResponseEntity.status(200).body(courseScheduleService.getAllSchedules());
     }
 
-    @PostMapping("/add/{courseId}")
-    public ResponseEntity<?> addSchedule(@PathVariable Integer courseId,
+    @PostMapping("/add/teacher-id/{teacherId}/course-id/{courseId}")
+    public ResponseEntity<?> addSchedule(@PathVariable Integer teacherId, @PathVariable Integer courseId,
                                          @Valid @RequestBody CourseSchedule schedule) {
-        courseScheduleService.addSchedule(courseId, schedule);
+        courseScheduleService.addSchedule(teacherId, courseId, schedule);
         return ResponseEntity.status(200)
                 .body(new ApiResponse("Course schedule added successfully"));
     }
@@ -34,15 +34,15 @@ public class CourseScheduleController {
         return ResponseEntity.status(200).body(courseScheduleService.getScheduleById(id));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateSchedule(@PathVariable Integer id, @Valid @RequestBody CourseSchedule schedule) {
-        courseScheduleService.updateSchedule(id, schedule);
+    @PutMapping("/update/id/{id}/teacher-id/{teacherId}")
+    public ResponseEntity<?> updateSchedule(@PathVariable Integer id, @PathVariable Integer teacherId, @Valid @RequestBody CourseSchedule schedule) {
+        courseScheduleService.updateSchedule(id, teacherId, schedule);
         return ResponseEntity.status(200).body(new ApiResponse("Course schedule updated successfully"));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteSchedule(@PathVariable Integer id) {
-        courseScheduleService.deleteSchedule(id);
+    @DeleteMapping("/delete/id/{id}/teacher-id/{teacherId}")
+    public ResponseEntity<?> deleteSchedule(@PathVariable Integer id, @PathVariable Integer teacherId) {
+        courseScheduleService.deleteSchedule(id, teacherId);
         return ResponseEntity.status(200).body(new ApiResponse("Course schedule deleted successfully"));
     }
 }

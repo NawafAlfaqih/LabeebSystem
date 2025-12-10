@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -46,8 +47,22 @@ public class CourseSchedule {
             ,message = "day must be 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday' or 'saturday'")
     private String day;
 
-    @OneToOne
-    @MapsId
+    @Pattern(regexp = "^(Available|Registered)$")
+    @Column(columnDefinition = "varchar(15) not null")
+    private String Availability;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "courseSchedule")
+    @PrimaryKeyJoinColumn
+    private StudentPayment studentPayment;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseSchedule")
+    private Set<Session> sessions;
+
+    @ManyToOne
+    @JsonIgnore
+    private Student student;
+
+    @ManyToOne
     @JsonIgnore
     private Course course;
 }
