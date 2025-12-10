@@ -1,6 +1,7 @@
 package org.example.labeebsystem.Controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
 import org.example.labeebsystem.API.ApiResponse;
@@ -21,20 +22,21 @@ public class CategoryController {
         return ResponseEntity.status(200).body(categoryService.getAllCategory());
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addCategory(Integer adminId, Category category){
+    @PostMapping("/add/admin-id/{adminId}")
+    public ResponseEntity<?> addCategory(@PathVariable Integer adminId, @RequestBody @Valid Category category){
         categoryService.addCategory(adminId,category);
         return ResponseEntity.status(200).body(new  ApiResponse("category added successfully"));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateCategory(Integer adminId,Integer id,Category category){
+    @PutMapping("/update/admin-id/{adminId}/category-id/{id}")
+    public ResponseEntity<?> updateCategory(@PathVariable Integer adminId, @PathVariable Integer id,
+                                            @RequestBody @Valid Category category) {
         categoryService.updateCategory(adminId,id,category);
         return ResponseEntity.status(200).body(new  ApiResponse("category updated successfully"));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteCategory(Integer adminId,Integer id){
+    @DeleteMapping("/delete/admin-id/{adminId}/category-id/{id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable Integer adminId, @PathVariable Integer id){
         categoryService.deleteCategory(adminId,id);
         return ResponseEntity.status(200).body(new  ApiResponse("category deleted successfully"));
 
