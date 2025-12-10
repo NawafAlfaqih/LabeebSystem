@@ -47,5 +47,21 @@ public class TeacherController {
         return ResponseEntity.status(200).body(teacherService.getTeachersOrderedByRating());
     }
 
+    @GetMapping("/get-pending-teachers/{adminID}")
+    public ResponseEntity<?> getAllPendingTeachers(@PathVariable Integer adminID){
+        return ResponseEntity.status(200).body(teacherService.getAllPendingTeachers(adminID));
+    }
+
+    @PutMapping("/accept-teacher/{adminId}/{teacherId}")
+    public ResponseEntity<?>  acceptTeacher(@PathVariable Integer adminId,@PathVariable Integer teacherId){
+        teacherService.acceptTeacher(adminId,teacherId);
+        return ResponseEntity.status(200).body(new ApiResponse("teacher accepted successfully"));
+    }
+
+    @PutMapping("/reject-teacher/{adminId}/{teacherId}")
+    public ResponseEntity<?>  rejectTeacher(@PathVariable Integer adminId,@PathVariable Integer teacherId){
+        teacherService.rejectTeacher(adminId,teacherId);
+        return ResponseEntity.status(200).body(new ApiResponse("teacher reject successfully"));
+    }
 
 }

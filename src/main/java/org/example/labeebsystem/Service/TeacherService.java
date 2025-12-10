@@ -3,8 +3,10 @@ package org.example.labeebsystem.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
+import org.example.labeebsystem.Model.Admin;
 import org.example.labeebsystem.Model.Category;
 import org.example.labeebsystem.Model.Teacher;
+import org.example.labeebsystem.Repository.AdminRepository;
 import org.example.labeebsystem.Repository.CategoryRepository;
 import org.example.labeebsystem.Repository.TeacherRepository;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
     private final EmailService emailService;
     private final CategoryRepository categoryRepository;
+    private final AdminRepository adminRepository;
 
     public List<Teacher> getAllTeachers(){
         List<Teacher> allTeachers=teacherRepository.findAll();
@@ -80,6 +83,64 @@ public class TeacherService {
         return teacherRepository.getTeachersOrderedByRating();
     }
 
+    public List<Teacher> getAllPendingTeachers(Integer adminId){
+        Admin admin=adminRepository.findAdminById(adminId);
+        if(admin==null){
+            throw new ApiException("admin ID not found");
+        }
+        return teacherRepository.getAllPendingTeachers();
+    }
+
+    public void acceptTeacher(Integer adminId,Integer teacherId){
+        Admin admin=adminRepository.findAdminById(adminId);
+        if(admin==null){
+            throw new ApiException("admin ID not found");
+        }
+        Teacher teacher= teacherRepository.findTeacherById(teacherId);
+        if(teacher==null){
+            throw new ApiException("teacher ID not found");
+        }
+        if(teacher.getActiveStatus().equalsIgnoreCase("rejected")){
+            throw new ApiException("status rejected can't change to accepted");
+        }
+        if (teacher.getActiveStatus().equalsIgnoreCase("accepted")){
+            throw new ApiException("status is already accepted");
+        }
+            teacher.setActiveStatus("accepted");
+            teacherRepository.save(teacher);
+            emailService.sendEmail(teacher.getEmail(),"welcome to Labeeb","Dear "+teacher.getName()+ """
+                    , We are pleased to welcome you to Labeeb. Your acceptance reflects our confidence in your expertise and the value you will bring to our learners. We look forward to supporting your teaching journey and seeing the positive impact you will make on our community.
+                    
+                    If you need any assistance as you get started, please feel free to reach out.
+                    
+                    Welcome aboard,
+                    Labeeb Team
+                    """);
+    }
+
+    public void rejectTeacher(Integer adminId,Integer teacherId){
+        Admin admin=adminRepository.findAdminById(adminId);
+        if(admin==null){
+            throw new ApiException("admin ID not found");
+        }
+        Teacher teacher= teacherRepository.findTeacherById(teacherId);
+        if(teacher==null){
+            throw new ApiException("teacher ID not found");
+        }
+        if(teacher.getActiveStatus().equalsIgnoreCase("rejected")){
+            throw new ApiException("teacher is already rejected");
+        }
+            teacher.setActiveStatus("rejected");
+            teacherRepository.save(teacher);
+            emailService.sendEmail(teacher.getEmail(),"request to join Labeeb status","Dear "+teacher.getName()+ """
+                    Thank you for your interest in joining Labeeb and for the time you invested in your application. After careful review, we are unable to move forward at this time.
+                    
+                    We appreciate your desire to be part of our platform and encourage you to apply again in the future.
+                    
+                    Kind regards,
+                    Labeeb Team
+                    """);
+    }
 
 
 

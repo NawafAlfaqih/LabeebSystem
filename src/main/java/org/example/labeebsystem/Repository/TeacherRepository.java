@@ -21,4 +21,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 
     @Query("select t from Teacher t order by t.rating asc ")
     List<Teacher> getTeachersOrderedByRating();
+
+    @Query("select t from  Teacher  t where t.ActiveStatus like 'pending' ")
+    List<Teacher> getAllPendingTeachers();
 }
