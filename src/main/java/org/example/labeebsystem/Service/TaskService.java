@@ -10,6 +10,7 @@ import org.example.labeebsystem.Repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -125,4 +126,25 @@ public class TaskService {
         taskRepository.delete(task);
     }
 
+
+//هذي المهام الي ماسواها المدرس وخلص وقتها
+    public List<Task> getExpiredUncorrectedTasks(Integer teacherId) {
+
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null)
+            throw new ApiException("Teacher not found");
+        List<Task> tasks = taskRepository.findTaskByTeacher(teacher);
+        List<Task> result = new ArrayList<>();
+
+        LocalDateTime now = LocalDateTime.now();
+
+        for (Task t : tasks) {
+            if (t.getDueDate().isBefore(now) && !t.getStatus().equals("Approved") && t.getGrade() == 0) {
+                result.add(t);
+            }
+        }
+        if (result.isEmpty())
+            throw new ApiException("No out date tasks found");
+        return result;
+    }
 }

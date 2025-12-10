@@ -48,4 +48,10 @@ public class TaskController {
         taskService.deleteParentTask(taskId, parentId);
         return ResponseEntity.status(200).body("Task deleted by parent successfully");
     }
+//هذي المهام الي راح وقتها وماسواها المدرس
+    @GetMapping("/expired/{teacherId}")
+    public ResponseEntity<?> getExpiredTasks(@PathVariable Integer teacherId) {
+        return ResponseEntity.status(200).body(taskService.getExpiredUncorrectedTasks(teacherId));
+    }
+
 }
