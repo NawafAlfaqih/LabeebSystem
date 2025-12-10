@@ -2,13 +2,12 @@ package org.example.labeebsystem.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
-import org.example.labeebsystem.Model.Admin;
-import org.example.labeebsystem.Model.Course;
-import org.example.labeebsystem.Model.CourseSchedule;
-import org.example.labeebsystem.Model.Session;
+import org.example.labeebsystem.DTO_out.AttendanceReportDTO;
+import org.example.labeebsystem.Model.*;
 import org.example.labeebsystem.Repository.AdminRepository;
 import org.example.labeebsystem.Repository.CourseRepository;
 import org.example.labeebsystem.Repository.SessionRepository;
+import org.example.labeebsystem.Repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,6 +20,8 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final CourseRepository courseRepository;
 private final AdminRepository adminRepository;
+
+private final StudentRepository studentRepository;
 
 
 public List<Session> getAllSessions(Integer adminId) {
@@ -78,4 +79,40 @@ public List<Session> getAllSessions(Integer adminId) {
             throw new ApiException("Session not found");
         sessionRepository.delete(session);
     }
+
+
+    //الحضور التفصيلي
+    public AttendanceReportDTO getAttendanceReport(Integer studentId, Integer courseId) {
+
+        Course course = courseRepository.findCourseById(courseId);
+        if (course == null)
+            throw new ApiException("Course not found");
+
+        Student student = studentRepository.findStudentById(studentId);
+        if (student == null)
+            throw new ApiException("Student not found");
+        List<Session> sessions = sessionRepository.findAll();
+        int total = 0, attended = 0, absent = 0, late = 0;
+        for (Session s : sessions) {
+            if (s.getCourse().getId().equals(courseId) && s.getStudent().getId().equals(studentId)) {
+                total++;
+                if (s.getAttendance().equals("Attended")) attended++;
+                else if (s.getAttendance().equals("Absent")) absent++;
+                else if (s.getAttendance().equals("Late")) late++;
+            }
+        }
+        double percentage = 0.0;
+        if (total > 0) {
+            percentage = (attended * 100.0) / total;
+        }
+        return new AttendanceReportDTO(
+                course.getTitle(),
+                total,
+                attended,
+                absent,
+                late,
+                percentage
+        );
+    }
+
 }

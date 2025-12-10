@@ -40,4 +40,10 @@ public class SessionController {
         sessionService.deleteSession(sessionId);
         return ResponseEntity.status(200).body(new ApiResponse("session deleted successfully"));
     }
+//حقت الحضور التفصيلي
+    @GetMapping("/attendance/{studentId}/{courseId}")
+    public ResponseEntity<?> getAttendanceReport(@PathVariable Integer studentId, @PathVariable Integer courseId) {
+        return ResponseEntity.status(200).body(sessionService.getAttendanceReport(studentId, courseId));
+    }
+
 }

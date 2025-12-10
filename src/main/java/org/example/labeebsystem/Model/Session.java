@@ -32,8 +32,10 @@ public class Session {
     @Column(columnDefinition = "date not null")
     private LocalDate date;
 
-    @Pattern(regexp = "^(Attended|Absent)$")
+    //اضفت الlate
+    @Pattern(regexp = "^(Attended|Absent|Late)$")
     private String attendance;
+
 
     @ManyToOne
     @JsonIgnore
