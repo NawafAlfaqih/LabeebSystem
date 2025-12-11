@@ -21,30 +21,19 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty(message = "name can't be empty")
-    @Size(min = 2,max = 15,message = "name must be 2 litters minimum, 15 litters maximum")
     @Column(columnDefinition = "varchar(15) not null")
     private String name;
 
-    @NotBlank(message = "email cannot be blank.")
     @Column(columnDefinition = "varchar(40) not null unique")
-    @Email
     private String email;
 
-    @NotBlank(message = "password cannot be blank.")
-    @Size(min = 8, message = "password length must be at least '8'.")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,?!])(?=\\S+$).{8,20}$",
-            message = "Password must contain at least one digit, one lowercase letter, " +
-                    "one uppercase letter, one special character, and be 8-20 characters long.")
     @Column(columnDefinition = "varchar(20) not null")
     private String password;
 
-    @NotBlank(message = "major cannot be empty")
     @Column(columnDefinition = "varchar(20) not null")
     private String major;
 
-    @NotBlank(message = "bio cannot be empty")
-    @Column(columnDefinition = "varchar(256) not null")
+    @Column(columnDefinition = "TEXT not null")
     private String bio;
 
     @Column(columnDefinition = "double default 0")
@@ -56,9 +45,8 @@ public class Teacher {
     @Max(value = 5)
     private Integer rating;
 
-    @Pattern(regexp = "^(pending|accepted|rejected)$")
     @Column(columnDefinition = "varchar(15) not null")
-    private String ActiveStatus;
+    private String activeStatus;
 
     @ManyToOne
     @JsonIgnore

@@ -3,6 +3,7 @@ package org.example.labeebsystem.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
+import org.example.labeebsystem.DTO_in.TeacherDTOIN;
 import org.example.labeebsystem.Model.Admin;
 import org.example.labeebsystem.Model.Category;
 import org.example.labeebsystem.Model.Teacher;
@@ -30,27 +31,65 @@ public class TeacherService {
         return allTeachers;
     }
 
-    public void addTeacher(Teacher teacher){
-        Teacher teacher1 = teacherRepository.findTeacherByEmail(teacher.getEmail());
-        if(teacher1!=null){
-            throw new ApiException("this email: "+teacher.getEmail()+" ,is already used");
+    public void addTeacher(TeacherDTOIN teacherDTO) {
+        if (teacherRepository.findTeacherByEmail(teacherDTO.getEmail()) != null) {
+            throw new ApiException("This email is already used: " + teacherDTO.getEmail());
         }
-        teacher.setActiveStatus("pending");
-        emailService.sendEmail(teacher.getEmail(),"welcome to Labeeb system","to activate your account please provide us with the following Documents :" +
-                "\n1. your last degree,2. your passport ");
-        teacherRepository.save(teacher);
+        Category category = categoryRepository.findCategoryByName(teacherDTO.getCategoryType());
+        if (category == null)
+            throw new ApiException("Category was not found");
+
+        Teacher teacher = new Teacher(
+                null,
+                teacherDTO.getName(),
+                teacherDTO.getEmail(),
+                teacherDTO.getPassword(),
+                teacherDTO.getMajor(),
+                teacherDTO.getBio(),
+                0.0,
+                0,
+                "pending",
+                category,
+                null,
+                null,
+                null,
+                null
+        );
+
+        Teacher savedTeacher = teacherRepository.save(teacher);
+
+        emailService.sendEmail(
+                savedTeacher.getEmail(),
+                "Welcome to Labeeb system",
+                "To activate your account please provide the following documents:\n1. Last degree\n2. Passport"
+        );
     }
 
-    public void updateTeacher(Integer id,Teacher teacher){
+
+    public void updateTeacher(Integer id, TeacherDTOIN teacherDTO){
         Teacher teacher1=teacherRepository.findTeacherById(id);
         if (teacher1 == null) {
             throw new ApiException("teacher id not found") ;
         }
-        if (!teacher1.getEmail().equals(teacher.getEmail())) {
-            if (teacherRepository.existsByEmail(teacher.getEmail())) {
+
+        if (!teacher1.getEmail().equals(teacherDTO.getEmail())) {
+            if (teacherRepository.existsByEmail(teacherDTO.getEmail())) {
                 throw new ApiException( "Email already exists");
             }
         }
+
+        Category category = categoryRepository.findCategoryByName(teacherDTO.getCategoryType());
+        if (category == null)
+            throw new ApiException("Category was not found");
+
+        teacher1.setName(teacherDTO.getName());
+        teacher1.setEmail(teacherDTO.getEmail());
+        teacher1.setPassword(teacherDTO.getPassword());
+        teacher1.setMajor(teacherDTO.getMajor());
+        teacher1.setBio(teacherDTO.getBio());
+        teacher1.setCategory(category);
+
+        teacherRepository.save(teacher1);
     }
 
     public void deleteTeacher(Integer id){
@@ -141,8 +180,5 @@ public class TeacherService {
                     Labeeb Team
                     """);
     }
-
-
-
 
 }
