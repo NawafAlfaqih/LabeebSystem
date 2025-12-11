@@ -36,4 +36,10 @@ public class StudentPaymentController {
         return ResponseEntity.status(200).body(new ApiResponse("Course purchased successfully (Installments Payment)"));
     }
 
+    @PutMapping("/pay-installment/{parentId}/{studentPaymentId}")
+    public ResponseEntity<?> payInstallment(@PathVariable Integer parentId, @PathVariable Integer studentPaymentId) {
+        studentPaymentService.payInstallment(parentId, studentPaymentId);
+        return ResponseEntity.status(200).body("Installment paid successfully");
+    }
+
 }

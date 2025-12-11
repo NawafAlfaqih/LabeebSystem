@@ -18,6 +18,7 @@ public class StudentPaymentService {
     private final CourseScheduleRepository courseScheduleRepository;
     private final AdminRepository adminRepository;
     private final ParentRepository parentRepository;
+    private final TeacherRepository teacherRepository;
 
 
     public List<StudentPayment> getAllStudentCourses(Integer adminId) {
@@ -52,6 +53,14 @@ public class StudentPaymentService {
             if (cs.getDay().equals(courseSchedule.getDay()))
                 throw new ApiException("Cannot have two courses in the same day");
         }
+
+        Double coursePrice = courseSchedule.getCourse().getPrice();
+        parent.setBalance(parent.getBalance() - coursePrice);
+        parentRepository.save(parent);
+
+        Teacher teacher = courseSchedule.getCourse().getTeacher();
+        teacher.setBalance(teacher.getBalance() + courseSchedule.getCourse().getPrice());
+        teacherRepository.save(teacher);
 
         //Todo: DiscountCode fullPayment
         studentPayment.setFinalPrice(
@@ -88,7 +97,7 @@ public class StudentPaymentService {
         if (!parent.equals(student.getParent()))
             throw new ApiException("Not correct parent for student");
 
-        if (parent.getBalance() < courseSchedule.getCourse().getPrice()/4)
+        if (parent.getBalance() < courseSchedule.getCourse().getPrice()/4.0)
             throw new ApiException("Balance is not sufficient");
 
         Set<CourseSchedule> courseSchedules = student.getCourseSchedules();
@@ -97,7 +106,15 @@ public class StudentPaymentService {
                 throw new ApiException("Cannot have two courses in the same day");
         }
 
-        //Todo: DiscountCode fullPayment
+        Double firstInstallment = courseSchedule.getCourse().getPrice()/4.0;
+        parent.setBalance(parent.getBalance() - firstInstallment);
+        parentRepository.save(parent);
+
+        Teacher teacher = courseSchedule.getCourse().getTeacher();
+        teacher.setBalance(teacher.getBalance() + firstInstallment);
+        teacherRepository.save(teacher);
+
+        //Todo: DiscountCode InstallmentPayment
         studentPayment.setFinalPrice(
                 studentPayment.getCourseSchedule()
                         .getCourse()
@@ -116,5 +133,36 @@ public class StudentPaymentService {
     }
 
     //Todo: Pay installment دفع دفعه
+    public void payInstallment(Integer parentId, Integer studentPaymentId) {
+        StudentPayment studentPayment = studentPaymentRepository.findStudentPaymentById(studentPaymentId);
+        if (studentPayment == null)
+            throw new ApiException("Payment record was not found");
+
+        Parent parent = parentRepository.findParentById(parentId);
+        if (parent == null)
+            throw new ApiException("Parent was not found");
+
+        Student student = studentPayment.getCourseSchedule().getStudent();
+        if (!parent.equals(student.getParent()))
+            throw new ApiException("Not correct parent for this student");
+
+        if (studentPayment.getRemainingInstallments() <= 0)
+            throw new ApiException("All installments are already paid");
+
+        Double installmentAmount = studentPayment.getInstallmentAmount();
+
+        if (parent.getBalance() < installmentAmount)
+            throw new ApiException("Balance is not sufficient");
+
+        parent.setBalance(parent.getBalance() - installmentAmount);
+        parentRepository.save(parent);
+        studentPayment.setRemainingInstallments(studentPayment.getRemainingInstallments() - 1);
+
+        Teacher teacher = studentPayment.getCourseSchedule().getCourse().getTeacher();
+        teacher.setBalance(teacher.getBalance() + installmentAmount);
+        teacherRepository.save(teacher);
+
+        studentPaymentRepository.save(studentPayment);
+    }
 
 }

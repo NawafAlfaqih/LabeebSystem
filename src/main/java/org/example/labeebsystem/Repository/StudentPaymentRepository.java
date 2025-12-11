@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudentPaymentRepository extends JpaRepository<StudentPayment, Integer> {
 
-    StudentPayment findStudent_CourseById(Integer id);
+    StudentPayment findStudentPaymentById(Integer studentPaymentId);
 }

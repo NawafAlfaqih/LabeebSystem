@@ -30,13 +30,13 @@ public class StudentPayment  {
     private String discountCode;
 
     @NotNull(message = "final price cannot be empty")
-    private Integer finalPrice;
+    private Double finalPrice;
 
     private Integer totalInstallments;
 
     private Integer remainingInstallments;
 
-    private Integer InstallmentAmount;
+    private Double InstallmentAmount;
 
     @OneToOne
     @MapsId
