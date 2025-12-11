@@ -206,4 +206,25 @@ public class TaskService {
         return taskRepository.findAllByTeacherAndCreatedBy(teacher, "teacher");
     }
 
+//التاسكات الي حالها بندنق ماتسلمت
+public List<Task> getPendingTasksForStudent(Integer studentId) {
+
+    Student student = studentRepository.findStudentById(studentId);
+    if (student == null)
+        throw new ApiException("Student not found");
+    List<Task> taskList = taskRepository.findAll();
+    List<Task> result = new ArrayList<>();
+    for (Task t : taskList) {
+        if (t.getStudent() != null && t.getStudent().getId().equals(studentId) && t.getStatus().equalsIgnoreCase("Pending")) {
+            result.add(t);
+        }
+    }
+    if (result.isEmpty())
+        throw new ApiException("No pending tasks found for this student");
+
+    return result;
+}
+
+
+
 }

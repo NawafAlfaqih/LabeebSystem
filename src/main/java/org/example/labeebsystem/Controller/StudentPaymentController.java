@@ -53,7 +53,7 @@ public class StudentPaymentController {
         studentPaymentService.payInstallment(parentId, studentPaymentId);
         return ResponseEntity.status(200).body("Installment paid successfully");
     }
-
+//يعرض الفاتوره ويرسلها ايميل
     @GetMapping("/receipt/{paymentId}")
     public ResponseEntity getReceipt(@PathVariable Integer paymentId) {
         String receipt = studentPaymentService.viewReceipt(paymentId);

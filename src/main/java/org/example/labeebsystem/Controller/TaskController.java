@@ -73,6 +73,9 @@ public class TaskController {
     public ResponseEntity<?> getTasksUploadedByTeacher(@PathVariable Integer teacherId) {
         return ResponseEntity.status(200).body(taskService.getTasksUploadedByTeacher(teacherId));
     }
-
-
+    //التاسكات الي حالتها بيندنق
+    @GetMapping("/pending/{studentId}")
+    public ResponseEntity<?> getPendingTasks(@PathVariable Integer studentId) {
+        return ResponseEntity.status(200).body(taskService.getPendingTasksForStudent(studentId));
+    }
 }
