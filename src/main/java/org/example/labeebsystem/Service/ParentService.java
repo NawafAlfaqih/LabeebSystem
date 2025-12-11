@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
 import org.example.labeebsystem.DTO_out.ParentDTOout;
 import org.example.labeebsystem.Model.Parent;
+import org.example.labeebsystem.Model.StudentPayment;
 import org.example.labeebsystem.Repository.AdminRepository;
 import org.example.labeebsystem.Repository.ParentRepository;
+import org.example.labeebsystem.Repository.StudentPaymentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class ParentService {
 
     private final ParentRepository parentRepository;
     private final AdminRepository adminRepository;
+
+    private final StudentPaymentRepository studentPaymentRepository;
 
     public List<ParentDTOout> getAllParents(Integer adminId) {
         if (adminRepository.findAdminById(adminId) == null)
@@ -70,5 +74,7 @@ public class ParentService {
         parent.setBalance(parent.getBalance() + amount);
         parentRepository.save(parent);
     }
+
+
 
 }

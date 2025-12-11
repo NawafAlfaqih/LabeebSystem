@@ -5,6 +5,7 @@ import org.example.labeebsystem.API.ApiResponse;
 import org.example.labeebsystem.Model.Admin;
 import org.example.labeebsystem.Model.Parent;
 import org.example.labeebsystem.Service.ParentService;
+import org.example.labeebsystem.Service.StudentPaymentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 public class ParentController {
 
     private final ParentService parentService;
+    private final StudentPaymentService studentPaymentService;
 
     @GetMapping("/get/admin-id/{adminId}")
     public ResponseEntity<?> getAllParents(@PathVariable Integer adminId){

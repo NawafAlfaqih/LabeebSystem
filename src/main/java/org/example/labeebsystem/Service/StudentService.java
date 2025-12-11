@@ -2,6 +2,7 @@ package org.example.labeebsystem.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
+import org.example.labeebsystem.DTO_out.LeaderboardDTO;
 import org.example.labeebsystem.Model.Parent;
 import org.example.labeebsystem.Model.Student;
 import org.example.labeebsystem.Repository.AdminRepository;
@@ -9,6 +10,7 @@ import org.example.labeebsystem.Repository.ParentRepository;
 import org.example.labeebsystem.Repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -80,6 +82,27 @@ public class StudentService {
         }
 
         return studentRepository.findAllByParent(parent);
+    }
+
+
+    //ليدر بورد اعلى قريد
+    public List<LeaderboardDTO> getLeaderboard(Integer courseId) {
+        List<Student> students = studentRepository.findStudentsByCourseId(courseId);
+        if (students.isEmpty()) {
+            throw new ApiException("No students found for this course");
+        }
+
+        students.sort((a, b) -> b.getTotalGrade().compareTo(a.getTotalGrade()));
+        List<LeaderboardDTO> leaderboard = new ArrayList<>();
+
+        for (Student s : students) {
+            leaderboard.add(new LeaderboardDTO(
+                    s.getName(),
+                    s.getTotalGrade()
+            ));
+        }
+
+        return leaderboard;
     }
 
 }

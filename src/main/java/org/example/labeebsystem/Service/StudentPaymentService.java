@@ -164,5 +164,60 @@ public class StudentPaymentService {
 
         studentPaymentRepository.save(studentPayment);
     }
+//استرجاع
+public String requestRefund(Integer parentId, Integer paymentId, String message) {
+
+    Parent parent = parentRepository.findParentById(parentId);
+    if (parent == null)
+        throw new ApiException("Parent not found");
+
+    StudentPayment payment = studentPaymentRepository.findStudentPaymentById(paymentId);
+    if (payment == null)
+        throw new ApiException("Payment not found");
+    Parent paymentOwner = payment.getCourseSchedule().getStudent().getParent();
+    if (!paymentOwner.getId().equals(parentId))
+        throw new ApiException("This payment does not belong to this parent");
+
+    if (payment.getRefundRequested())
+        throw new ApiException("Refund request already submitted");
+    payment.setRefundRequested(true);
+    payment.setRefundMessage(message);
+
+    studentPaymentRepository.save(payment);
+
+    return "Your refund request has been received successfully. The process may take 1–5 days";
+}
+
+    //قبول الاسترجاع من الادمن
+    public String processRefund(Integer adminId, Integer paymentId, boolean approve) {
+
+        Admin admin = adminRepository.findAdminById(adminId);
+        if (admin == null)
+            throw new ApiException("Admin not found");
+
+        StudentPayment payment = studentPaymentRepository.findStudentPaymentById(paymentId);
+        if (payment == null)
+            throw new ApiException("Payment not found");
+
+        CourseSchedule schedule = payment.getCourseSchedule();
+        Student student = schedule.getStudent();
+        Parent parent = student.getParent();
+        Teacher teacher = schedule.getCourse().getTeacher();
+        double amount = payment.getFinalPrice();
+
+        if (approve) {
+            parent.setBalance(parent.getBalance() + amount);
+            teacher.setBalance(teacher.getBalance() - amount);
+            parentRepository.save(parent);
+            teacherRepository.save(teacher);
+
+            return "Refund approved and processed successfully";
+        }
+        return "Refund request has been rejected";
+    }
+
+
+
+
 
 }

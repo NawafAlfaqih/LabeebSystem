@@ -45,5 +45,11 @@ public class StudentController {
     public ResponseEntity<?> getStudentsByParent(@PathVariable Integer parentId) {
         return ResponseEntity.status(200).body(studentService.getStudentsByParent(parentId));
     }
+//ليدر بورد اعلى قريد
+    @GetMapping("/leaderboard/{courseId}")
+    public ResponseEntity<?> getLeaderboard(@PathVariable Integer courseId) {
+        return ResponseEntity.status(200).body(studentService.getLeaderboard(courseId));
+    }
+
 
 }

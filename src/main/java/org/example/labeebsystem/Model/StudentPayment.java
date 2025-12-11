@@ -2,6 +2,7 @@ package org.example.labeebsystem.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,12 @@ public class StudentPayment  {
     private Integer remainingInstallments;
 
     private Double InstallmentAmount;
+    @NotEmpty(message = "you have to write the status")
+    private Boolean refundRequested = false;
+
+    @Column(columnDefinition = "varchar(300)")
+    private String refundMessage;
+
 
     @OneToOne
     @MapsId

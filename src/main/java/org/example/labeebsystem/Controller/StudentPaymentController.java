@@ -1,5 +1,6 @@
 package org.example.labeebsystem.Controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiResponse;
 import org.example.labeebsystem.Model.StudentPayment;
@@ -35,7 +36,19 @@ public class StudentPaymentController {
         studentPaymentService.buyCourseInstallmentsPayment(parentId, studentId, courseScheduleId, studentPayment);
         return ResponseEntity.status(200).body(new ApiResponse("Course purchased successfully (Installments Payment)"));
     }
+    //طلب استرجاع
+    @PostMapping("/refund/{parentId}/{paymentId}")
+    public String requestRefund(@PathVariable Integer parentId, @PathVariable Integer paymentId, @RequestBody String message) {
+        return studentPaymentService.requestRefund(parentId, paymentId, message);
+    }
 
+    //قبول الاسترجاع
+    @PutMapping("/refund/{adminId}/{paymentId}")
+    public String processRefund(@PathVariable Integer adminId, @PathVariable Integer paymentId, @RequestBody @Valid boolean approve) {
+
+    return studentPaymentService.processRefund(adminId, paymentId, approve);
+    }
+//تقسيط
     @PutMapping("/pay-installment/{parentId}/{studentPaymentId}")
     public ResponseEntity<?> payInstallment(@PathVariable Integer parentId, @PathVariable Integer studentPaymentId) {
         studentPaymentService.payInstallment(parentId, studentPaymentId);
