@@ -29,18 +29,28 @@ public class CourseService {
         Teacher teacher = teacherRepository.findTeacherById(teacherId);
         if (teacher == null)
             throw new ApiException("Teacher not found");
+
         if (!teacher.getCategory().getId().equals(teacher.getCategory().getId()))
             throw new ApiException("Teacher is not qualified to teach this course");
+
         course.setTeacher(teacher);
         courseRepository.save(course);
     }
 
 
-    public void updateCourse(Integer courseId, Course updatedCourse) {
+    public void updateCourse(Integer courseId, Integer teacherId, Course updatedCourse) {
 
         Course course = courseRepository.findCourseById(courseId);
         if (course == null)
             throw new ApiException("Course not found");
+
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null)
+            throw new ApiException("Teacher not found");
+
+        if (!courseRepository.findCourseByTeacher(teacher).equals(course))
+            throw new ApiException("Teacher is not the owner of Course");
+
         if (updatedCourse.getTitle() != null)
             course.setTitle(updatedCourse.getTitle());
 
@@ -49,14 +59,23 @@ public class CourseService {
 
         if (updatedCourse.getDescription() != null)
             course.setDescription(updatedCourse.getDescription());
+
         courseRepository.save(course);
     }
 
 
-    public void deleteCourse(Integer id) {
+    public void deleteCourse(Integer id, Integer teacherId) {
         Course course = courseRepository.findCourseById(id);
         if (course == null)
             throw new ApiException("Course not found");
+
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null)
+            throw new ApiException("Teacher not found");
+
+        if (!courseRepository.findCourseByTeacher(teacher).equals(course))
+            throw new ApiException("Teacher is not the owner of Course");
+
         courseRepository.delete(course);
     }
 }

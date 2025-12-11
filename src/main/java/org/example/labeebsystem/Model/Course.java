@@ -25,6 +25,7 @@ public class Course {
     @NotNull(message = "Course title must be filled")
     private String title;
 
+    @NotNull(message = "Course price must be filled")
     private Integer price;
 
     @NotEmpty(message = "description must be filled")
