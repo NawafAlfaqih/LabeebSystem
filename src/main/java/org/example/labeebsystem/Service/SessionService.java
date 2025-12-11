@@ -2,6 +2,7 @@ package org.example.labeebsystem.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
+import org.example.labeebsystem.DTO_in.ExcuseDTO;
 import org.example.labeebsystem.DTO_out.AttendanceReportDTO;
 import org.example.labeebsystem.Model.*;
 import org.example.labeebsystem.Repository.*;
@@ -145,6 +146,30 @@ public List<Session> getAllSessions(Integer adminId) {
             }
         }
     }
+
+    //هنا رفع الاعذار
+    public void uploadExcuse(Integer studentId, Integer sessionId, ExcuseDTO dto) {
+
+        Student student = studentRepository.findStudentById(studentId);
+        if (student == null) {
+            throw new ApiException("Student not found");
+        }
+
+        Session session = sessionRepository.findSessionById(sessionId);
+        if (session == null) {
+            throw new ApiException("Session not found");
+        }
+
+        if (!session.getStudent().getId().equals(studentId)) {
+            throw new ApiException("This session does not belong to the student");
+        }
+
+        session.setExcuseText(dto.getExcuseText());
+        session.setExcuseFileUrl(dto.getFileUrl());
+
+        sessionRepository.save(session);
+    }
+
 
 
 

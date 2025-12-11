@@ -37,6 +37,13 @@ public class Session {
     private String attendance;
 
 
+    //هذي عشان يرفع العذر
+    private String excuseText;
+
+    // هنا يرفع ملف العذر
+    private String excuseFileUrl;
+
+
     @ManyToOne
     @JsonIgnore
     private Student student;

@@ -71,4 +71,15 @@ public class StudentService {
 
         studentRepository.delete(student);
     }
+//كل الابناء الي عند اب معين
+    public List<Student> getChildren(Integer parentId) {
+
+        Parent parent = parentRepository.findParentById(parentId);
+        if (parent == null) {
+            throw new ApiException("Parent not found");
+        }
+
+        return studentRepository.findAllByParent(parent);
+    }
+
 }

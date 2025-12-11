@@ -40,4 +40,10 @@ public class StudentController {
         studentService.deleteStudent(id, parentId);
         return ResponseEntity.status(200).body(new ApiResponse("Student deleted successfully"));
     }
+//يطلع الستويدنت كلهم بناء علي اي دي الاب
+    @GetMapping("/by-parent/{parentId}")
+    public ResponseEntity getStudentsByParent(@PathVariable Integer parentId) {
+        return ResponseEntity.status(200).body(studentService.getStudentsByParent(parentId));
+    }
+
 }
