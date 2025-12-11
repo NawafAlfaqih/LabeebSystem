@@ -86,5 +86,20 @@ public class TaskController {
         taskService.submitTask(studentId, taskId, fileUrl);
         return ResponseEntity.status(200).body(new ApiResponse("Task submitted successfully"));
     }
+//المدرس يسوي ابروف للواجب
+    @PutMapping("/approve/{teacherId}/{taskId}")
+    public ResponseEntity approveTask(@PathVariable Integer teacherId, @PathVariable Integer taskId) {
+        taskService.approveTask(taskId, teacherId);
+        return ResponseEntity.status(200).body(new ApiResponse("Task approved successfully"));
+    }
+
+    //المدرس يسوي ريجيكت
+    @PutMapping("/reject/{teacherId}/{taskId}")
+    public ResponseEntity rejectTask(@PathVariable Integer teacherId, @PathVariable Integer taskId) {
+
+        taskService.rejectTask(taskId, teacherId);
+        return ResponseEntity.status(200).body(new ApiResponse("Task rejected successfully"));
+    }
+
 
 }

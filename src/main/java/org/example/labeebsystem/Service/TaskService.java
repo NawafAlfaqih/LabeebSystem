@@ -242,6 +242,40 @@ public List<Task> getPendingTasksForStudent(Integer studentId) {
         taskRepository.save(task);
     }
 
+//المدرس يسوي ابروف لواجب الطالب
+    public void approveTask(Integer taskId, Integer teacherId) {
 
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null)
+            throw new ApiException("Teacher not found");
+        Task task = taskRepository.findTaskById(taskId);
+        if (task == null)
+            throw new ApiException("Task not found");
+
+        if (!task.getTeacher().getId().equals(teacherId))
+            throw new ApiException("You are not allowed to approve this task");
+
+        if (task.getStatus().equals("Approved"))
+            throw new ApiException("Task is already approved");
+        task.setStatus("Approved");
+        taskRepository.save(task);
+    }
+    //المدرس يسوي ريجيكت لواجب الطالب
+    public void rejectTask(Integer taskId, Integer teacherId) {
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null)
+            throw new ApiException("Teacher not found");
+        Task task = taskRepository.findTaskById(taskId);
+        if (task == null)
+            throw new ApiException("Task not found");
+        if (!task.getTeacher().getId().equals(teacherId))
+            throw new ApiException("You are not allowed to reject this task");
+
+        if (task.getStatus().equals("Approved"))
+            throw new ApiException("Task is already approved and cannot be rejected");
+
+        task.setStatus("Rejected");
+        taskRepository.save(task);
+    }
 
 }
