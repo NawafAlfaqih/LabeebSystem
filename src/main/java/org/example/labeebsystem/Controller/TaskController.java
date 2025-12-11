@@ -1,5 +1,6 @@
 package org.example.labeebsystem.Controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiResponse;
 import org.example.labeebsystem.Model.Task;
@@ -78,4 +79,12 @@ public class TaskController {
     public ResponseEntity<?> getPendingTasks(@PathVariable Integer studentId) {
         return ResponseEntity.status(200).body(taskService.getPendingTasksForStudent(studentId));
     }
+
+//يسلم الطالب الواجب برابط
+    @PutMapping("/submit/{studentId}/{taskId}")
+    public ResponseEntity submitTask(@PathVariable Integer studentId, @PathVariable Integer taskId, @RequestBody @Valid String fileUrl) {
+        taskService.submitTask(studentId, taskId, fileUrl);
+        return ResponseEntity.status(200).body(new ApiResponse("Task submitted successfully"));
+    }
+
 }

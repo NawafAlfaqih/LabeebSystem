@@ -225,6 +225,23 @@ public List<Task> getPendingTasksForStudent(Integer studentId) {
     return result;
 }
 
+//الطالب يسلم الواجب رابط
+    public void submitTask(Integer studentId, Integer taskId, String fileUrl) {
+        Student student = studentRepository.findStudentById(studentId);
+        if (student == null)
+            throw new ApiException("Student not found");
+        Task task = taskRepository.findTaskById(taskId);
+        if (task == null)
+            throw new ApiException("Task not found");
+
+        if (!task.getStudent().getId().equals(studentId))
+            throw new ApiException("You cannot submit another student's task");
+
+        task.setFileAnswerUrl(fileUrl);
+        task.setStatus("Uploaded");
+        taskRepository.save(task);
+    }
+
 
 
 }
