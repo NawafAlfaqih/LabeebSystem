@@ -25,8 +25,7 @@ public class CourseScheduleController {
     public ResponseEntity<?> addSchedule(@PathVariable Integer teacherId, @PathVariable Integer courseId,
                                          @Valid @RequestBody CourseSchedule schedule) {
         courseScheduleService.addSchedule(teacherId, courseId, schedule);
-        return ResponseEntity.status(200)
-                .body(new ApiResponse("Course schedule added successfully"));
+        return ResponseEntity.status(200).body(new ApiResponse("Course schedule added successfully"));
     }
 
     @GetMapping("/get/{id}")
