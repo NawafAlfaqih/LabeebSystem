@@ -45,7 +45,6 @@ public class StudentPaymentController {
     //قبول الاسترجاع
     @PutMapping("/refund/{adminId}/{paymentId}")
     public String processRefund(@PathVariable Integer adminId, @PathVariable Integer paymentId, @RequestBody @Valid boolean approve) {
-
     return studentPaymentService.processRefund(adminId, paymentId, approve);
     }
 //تقسيط
