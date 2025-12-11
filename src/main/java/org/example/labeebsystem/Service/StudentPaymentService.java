@@ -6,6 +6,7 @@ import org.example.labeebsystem.Model.*;
 import org.example.labeebsystem.Repository.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ public class StudentPaymentService {
     private final AdminRepository adminRepository;
     private final ParentRepository parentRepository;
     private final TeacherRepository teacherRepository;
+    private final EmailService emailService;
 
 
     public List<StudentPayment> getAllStudentCourses(Integer adminId) {
@@ -214,6 +216,32 @@ public String requestRefund(Integer parentId, Integer paymentId, String message)
             return "Refund approved and processed successfully";
         }
         return "Refund request has been rejected";
+    }
+
+
+    //ارسال فاتوره وعرضها
+    public String viewReceipt(Integer paymentId) {
+        StudentPayment payment = studentPaymentRepository.findStudentPaymentById(paymentId);
+        if (payment == null)
+            throw new ApiException("Payment not found");
+        CourseSchedule schedule = payment.getCourseSchedule();
+        Student student = schedule.getStudent();
+        Parent parent = student.getParent();
+        Teacher teacher = schedule.getCourse().getTeacher();
+        String receipt =
+                "Labeeb Course Receipt : \n" +
+                        "Student: " + student.getName() + "\n" +
+                        "Course: " + schedule.getCourse().getTitle() + "\n" +
+                        "Final Price: " + payment.getFinalPrice() + "\n" +
+                        "Teacher: " + teacher.getName() + "\n" +
+                        "Date: " + LocalDate.now() + "\n" +
+                        "---------------------------\n" +
+                        "Thank you for using Labeeb";
+
+
+        emailService.sendEmail(parent.getEmail(), "Your Course Receipt", receipt
+        );
+        return receipt;
     }
 
 

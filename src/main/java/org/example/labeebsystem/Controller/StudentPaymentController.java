@@ -55,4 +55,10 @@ public class StudentPaymentController {
         return ResponseEntity.status(200).body("Installment paid successfully");
     }
 
+    @GetMapping("/receipt/{paymentId}")
+    public ResponseEntity getReceipt(@PathVariable Integer paymentId) {
+        String receipt = studentPaymentService.viewReceipt(paymentId);
+        return ResponseEntity.status(200).body(new ApiResponse(receipt));
+    }
+
 }
