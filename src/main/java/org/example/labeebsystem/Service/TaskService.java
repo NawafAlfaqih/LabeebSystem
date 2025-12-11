@@ -47,6 +47,7 @@ public class TaskService {
         task.setStatus("Pending");
         task.setCreatedAt(LocalDateTime.now());
         task.setParent(student.getParent());
+        task.setTeacher(teacher);
         task.setCreatedBy("Teacher");
         taskRepository.save(task);
     }
@@ -73,6 +74,7 @@ public class TaskService {
         task.setStatus("Pending");
         task.setCreatedAt(LocalDateTime.now());
         task.setParent(student.getParent());
+        task.setTeacher(teacher);
         task.setCreatedBy("Parent");
         taskRepository.save(task);
     }
@@ -86,7 +88,7 @@ public class TaskService {
         if (oldTask == null)
             throw new ApiException("Task not found");
 
-        if (task.getTeacher().equals(teacher))
+        if (!oldTask.getTeacher().equals(teacher))
             throw new ApiException("Teacher cannot update task");
 
         oldTask.setDescription(task.getDescription());
@@ -105,7 +107,7 @@ public class TaskService {
         if (task == null)
             throw new ApiException("Task not found");
 
-        if (task.getTeacher().equals(teacher))
+        if (!task.getTeacher().equals(teacher))
             throw new ApiException("Teacher cannot delete task");
 
         taskRepository.delete(task);
@@ -120,7 +122,7 @@ public class TaskService {
         if (task == null)
             throw new ApiException("Task not found");
 
-        if (task.getParent().equals(parent))
+        if (!task.getParent().equals(parent))
             throw new ApiException("Parent cannot delete task");
 
         taskRepository.delete(task);

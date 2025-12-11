@@ -30,7 +30,6 @@ public class Task {
     @Column(columnDefinition = "varchar(256) not null")
     private String description;
 
-    @FutureOrPresent(message = "createdAt cannot be in the past.")
     @Column(columnDefinition = "datetime not null")
     private LocalDateTime createdAt;
 

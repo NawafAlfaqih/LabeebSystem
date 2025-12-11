@@ -56,16 +56,13 @@ public List<Session> getAllSessions(Integer adminId) {
         Session session = sessionRepository.findSessionById(sessionId);
         if (session == null)
             throw new ApiException("session not fount");
-        if (updatedSession.getSession_url() != null)
-            session.setSession_url(updatedSession.getSession_url());
+        if (updatedSession.getSessionUrl() != null)
+            session.setSessionUrl(updatedSession.getSessionUrl());
 
         if (updatedSession.getAttendance() != null)
             session.setAttendance(updatedSession.getAttendance());
 
         if (updatedSession.getDate() != null) {
-            CourseSchedule schedule = session.getCourseSchedule();
-            if (updatedSession.getDate().isBefore(schedule.getStart_date()) || updatedSession.getDate().isAfter(schedule.getEnd_date()))
-                throw new ApiException("Updated date is outside the course schedule");
             session.setDate(updatedSession.getDate());
         }
         sessionRepository.save(session);

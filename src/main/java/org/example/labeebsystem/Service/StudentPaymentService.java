@@ -118,7 +118,7 @@ public class StudentPaymentService {
 
         //Todo: DiscountCode InstallmentPayment
         studentPayment.setFinalPrice(
-                studentPayment.getCourseSchedule()
+                        courseSchedule
                         .getCourse()
                         .getPrice()
         );

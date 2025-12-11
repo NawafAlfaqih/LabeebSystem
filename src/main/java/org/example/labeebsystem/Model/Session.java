@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,10 +26,8 @@ public class Session {
     private Integer id;
 
     @NotEmpty(message = "URL must be added")
-    private String session_url;
+    private String sessionUrl;
 
-    @NotEmpty(message = "Date must be filled")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date not null")
     private LocalDate date;
 

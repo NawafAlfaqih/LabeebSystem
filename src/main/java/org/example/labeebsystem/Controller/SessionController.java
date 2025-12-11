@@ -22,9 +22,9 @@ public class SessionController {
     }
 
 
-    @PostMapping("/add/{courseId}")
-    public ResponseEntity<?> addSession(@PathVariable Integer courseId, @RequestBody @Valid Session session) {
-        sessionService.addSession(courseId, session);
+    @PostMapping("/add/{courseScheduleId}")
+    public ResponseEntity<?> addSession(@PathVariable Integer courseScheduleId, @RequestBody @Valid Session session) {
+        sessionService.addSession(courseScheduleId, session);
         return ResponseEntity.status(200).body(new ApiResponse("Session added successfully"));
     }
 
@@ -40,9 +40,9 @@ public class SessionController {
         return ResponseEntity.status(200).body(new ApiResponse("session deleted successfully"));
     }
 //حقت الحضور التفصيلي
-    @GetMapping("/attendance/{studentId}/{courseId}")
-    public ResponseEntity<?> getAttendanceReport(@PathVariable Integer studentId, @PathVariable Integer courseId) {
-        return ResponseEntity.status(200).body(sessionService.getAttendanceReport(studentId, courseId));
+    @GetMapping("/attendance/{studentId}/{courseScheduleId}")
+    public ResponseEntity<?> getAttendanceReport(@PathVariable Integer studentId, @PathVariable Integer courseScheduleId) {
+        return ResponseEntity.status(200).body(sessionService.getAttendanceReport(studentId, courseScheduleId));
     }
 //اعذار الغياب
 @PostMapping("/excuse/{studentId}/{sessionId}")

@@ -20,13 +20,13 @@ public class TaskController {
         return ResponseEntity.status(200).body(taskService.getAllTasks(adminId));
     }
     @PostMapping("/add/teacher/{studentId}/{teacherId}")
-    public ResponseEntity<?> addTeacherTask(@RequestBody Task task, @PathVariable Integer studentId,
+    public ResponseEntity<?> addTeacherTask(@RequestBody @Valid Task task, @PathVariable Integer studentId,
                                             @PathVariable Integer teacherId) {
         taskService.addTeacherTask(task, studentId, teacherId);
         return ResponseEntity.status(200).body(new ApiResponse("Task added by teacher successfully"));
     }
     @PostMapping("/add/parent/{studentId}/{teacherId}/{parentId}")
-    public ResponseEntity<?> addParentTask(@RequestBody Task task, @PathVariable Integer studentId,
+    public ResponseEntity<?> addParentTask(@RequestBody @Valid Task task, @PathVariable Integer studentId,
             @PathVariable Integer teacherId, @PathVariable Integer parentId) {
         taskService.addParentTask(task, studentId, teacherId, parentId);
         return ResponseEntity.status(200).body(new ApiResponse("Task added by parent successfully"));
@@ -34,7 +34,7 @@ public class TaskController {
 
     @PutMapping("/update/{taskId}/{teacherId}")
     public ResponseEntity<?> updateTask(@PathVariable Integer taskId, @PathVariable Integer teacherId,
-                                        @RequestBody Task task) {
+                                        @RequestBody @Valid Task task) {
         taskService.updateTask(taskId, task, teacherId);
         return ResponseEntity.status(200).body(new ApiResponse("Task updated successfully"));
     }
