@@ -2,10 +2,7 @@ package org.example.labeebsystem.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
-import org.example.labeebsystem.Model.Parent;
-import org.example.labeebsystem.Model.Student;
-import org.example.labeebsystem.Model.Task;
-import org.example.labeebsystem.Model.Teacher;
+import org.example.labeebsystem.Model.*;
 import org.example.labeebsystem.Repository.*;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +18,7 @@ public class TaskService {
     private final AdminRepository adminRepository;
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
+    private final CourseScheduleRepository courseScheduleRepository;
     private final CourseRepository courseRepository;
     private final ParentRepository parentRepository;
 
@@ -40,7 +38,8 @@ public class TaskService {
         if (student == null)
             throw new ApiException("Student not found");
 
-        if (courseRepository.findCourseByStudentAndTeacher(student, teacher) == null)
+        Course course = courseRepository.findCourseByTeacher(teacher);
+        if (courseScheduleRepository.findCourseScheduleByStudentAndCourse(student, course) == null)
             throw new ApiException("Teacher or Student not in the same Course");
 
         task.setGrade(0);
@@ -65,7 +64,8 @@ public class TaskService {
         if (parent == null)
             throw new ApiException("Parent not found");
 
-        if (courseRepository.findCourseByStudentAndTeacher(student, teacher) == null)
+        Course course = courseRepository.findCourseByTeacher(teacher);
+        if (courseScheduleRepository.findCourseScheduleByStudentAndCourse(student, course) == null)
             throw new ApiException("Teacher or Student not in the same Course");
 
         task.setGrade(0);
