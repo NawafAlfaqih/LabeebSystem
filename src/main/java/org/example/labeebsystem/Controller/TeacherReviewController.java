@@ -21,14 +21,14 @@ public class TeacherReviewController {
     }
 
     @PostMapping("/add/{parentId}/{teacherId}")
-    public ResponseEntity<?> addAllTeacherReview(@PathVariable Integer parentId,@PathVariable Integer teacherId,@RequestBody @Valid TeacherReview teacherReview){
+    public ResponseEntity<?> addTeacherReview(@PathVariable Integer parentId,@PathVariable Integer teacherId, @RequestBody @Valid TeacherReview teacherReview){
         teacherReviewService.addTeacherReview(parentId,teacherId,teacherReview);
         return ResponseEntity.status(200).body(new ApiResponse("teacher review added successfully"));
     }
 
 
     @PutMapping("/update/{teacherReviewID}")
-    public ResponseEntity<?> updateTeacherReview(@PathVariable Integer teacherReviewID,TeacherReview teacherReview){
+    public ResponseEntity<?> updateTeacherReview(@PathVariable Integer teacherReviewID, @RequestBody @Valid TeacherReview teacherReview){
         teacherReviewService.updateTeacherReview(teacherReviewID,teacherReview);
         return ResponseEntity.status(200).body(new ApiResponse("teacher review updated successfully"));
     }

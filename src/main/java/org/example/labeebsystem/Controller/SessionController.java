@@ -46,7 +46,7 @@ public class SessionController {
     }
 //اعذار الغياب
 @PostMapping("/excuse/{studentId}/{sessionId}")
-public ResponseEntity uploadExcuse(@PathVariable Integer studentId, @PathVariable Integer sessionId, @RequestBody ExcuseDTO dto) {
+    public ResponseEntity<?> uploadExcuse(@PathVariable Integer studentId, @PathVariable Integer sessionId, @RequestBody ExcuseDTO dto) {
     sessionService.uploadExcuse(studentId, sessionId, dto);
     return ResponseEntity.status(200).body("Excuse submitted successfully");
 }

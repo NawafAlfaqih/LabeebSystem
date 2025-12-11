@@ -39,6 +39,5 @@ public class CategoryController {
     public ResponseEntity<?> deleteCategory(@PathVariable Integer adminId, @PathVariable Integer id){
         categoryService.deleteCategory(adminId,id);
         return ResponseEntity.status(200).body(new  ApiResponse("category deleted successfully"));
-
     }
 }

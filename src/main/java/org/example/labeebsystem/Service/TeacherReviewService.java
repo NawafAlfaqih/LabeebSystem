@@ -42,10 +42,15 @@ public class TeacherReviewService {
         if(!(teacher.getActiveStatus().equalsIgnoreCase("accepted"))){
             throw new ApiException("teacher is not Active");
         }
+
+        if (teacherReviewRepository.findTeacherReviewByTeacherAndParent(teacher, parent) != null)
+            throw new ApiException("Can't review the same teacher twice.");
+
         teacherReview.setTeacher(teacher);
         teacherReview.setParent(parent);
         teacherReview.setCreatedAt(LocalDateTime.now());
         teacherReviewRepository.save(teacherReview);
+
         teacher.getTeacherReviews().add(teacherReview);
         Set<TeacherReview> reviews = teacher.getTeacherReviews();
         int total = reviews.stream()
@@ -64,6 +69,20 @@ public class TeacherReviewService {
         oldTeacherReview.setRating(teacherReview.getRating());
         oldTeacherReview.setComment(teacherReview.getComment());
         teacherReviewRepository.save(oldTeacherReview);
+
+        Teacher teacher = oldTeacherReview.getTeacher();
+
+        Set<TeacherReview> reviews = teacher.getTeacherReviews();
+
+        if (reviews.isEmpty()) {
+            teacher.setRating(0);
+        } else {
+            int total = reviews.stream().mapToInt(TeacherReview::getRating).sum();
+            int avg = total / reviews.size();
+            teacher.setRating(avg);
+        }
+
+        teacherRepository.save(teacher);
     }
 
     public void deleteTeacherReview(Integer teacherReviewID){
@@ -72,6 +91,20 @@ public class TeacherReviewService {
             throw new ApiException("teacher review ID was not found");
         }
         teacherReviewRepository.delete(oldTeacherReview);
+
+        Teacher teacher = oldTeacherReview.getTeacher();
+        teacher.getTeacherReviews().remove(oldTeacherReview);
+        Set<TeacherReview> reviews = teacher.getTeacherReviews();
+
+        if (reviews.isEmpty()) {
+            teacher.setRating(0);
+        } else {
+            int total = reviews.stream().mapToInt(TeacherReview::getRating).sum();
+            int avg = total / reviews.size();
+            teacher.setRating(avg);
+        }
+
+        teacherRepository.save(teacher);
     }
 
 

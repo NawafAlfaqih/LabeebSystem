@@ -42,7 +42,7 @@ public class StudentController {
     }
 //يطلع الستويدنت كلهم بناء علي اي دي الاب
     @GetMapping("/by-parent/{parentId}")
-    public ResponseEntity getStudentsByParent(@PathVariable Integer parentId) {
+    public ResponseEntity<?> getStudentsByParent(@PathVariable Integer parentId) {
         return ResponseEntity.status(200).body(studentService.getStudentsByParent(parentId));
     }
 

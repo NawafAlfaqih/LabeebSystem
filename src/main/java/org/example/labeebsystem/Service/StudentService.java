@@ -72,7 +72,7 @@ public class StudentService {
         studentRepository.delete(student);
     }
 //كل الابناء الي عند اب معين
-    public List<Student> getChildren(Integer parentId) {
+    public List<Student> getStudentsByParent(Integer parentId) {
 
         Parent parent = parentRepository.findParentById(parentId);
         if (parent == null) {

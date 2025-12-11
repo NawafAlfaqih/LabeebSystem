@@ -30,15 +30,15 @@ public class CourseController {
         return ResponseEntity.status(200).body(new ApiResponse("Course added successfully"));
     }
 
-    @PutMapping("/update/{courseId}")
-    public ResponseEntity<?> updateCourse(@PathVariable Integer courseId, @RequestBody @Valid Course course) {
-        courseService.updateCourse(courseId, course);
+    @PutMapping("/update/{courseId}/{teacherId}")
+    public ResponseEntity<?> updateCourse(@PathVariable Integer courseId, @PathVariable Integer teacherId, @RequestBody @Valid Course course) {
+        courseService.updateCourse(courseId, teacherId, course);
         return ResponseEntity.status(200).body(new ApiResponse("Course updated successfully"));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteCourse(@PathVariable Integer id) {
-        courseService.deleteCourse(id);
+    @DeleteMapping("/delete/{id}/{teacherId}")
+    public ResponseEntity<?> deleteCourse(@PathVariable Integer id, @PathVariable Integer teacherId) {
+        courseService.deleteCourse(id, teacherId);
         return ResponseEntity.status(200).body(new ApiResponse("Course deleted successfully"));
     }
 
