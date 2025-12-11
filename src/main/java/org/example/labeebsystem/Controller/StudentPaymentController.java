@@ -18,7 +18,7 @@ public class StudentPaymentController {
     private final StudentPaymentService studentPaymentService;
 
     @GetMapping("/get/{adminId}")
-    public ResponseEntity<?> getAllStudentCourses(@PathVariable Integer adminId) {
+    public ResponseEntity<?> getAllPayments(@PathVariable Integer adminId) {
         List<StudentPayment> payments = studentPaymentService.getAllStudentCourses(adminId);
         return ResponseEntity.status(200).body(payments);
     }

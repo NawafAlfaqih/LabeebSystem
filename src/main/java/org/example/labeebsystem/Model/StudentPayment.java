@@ -38,7 +38,7 @@ public class StudentPayment  {
     private Integer remainingInstallments;
 
     private Double InstallmentAmount;
-    @NotEmpty(message = "you have to write the status")
+
     private Boolean refundRequested = false;
 
     @Column(columnDefinition = "varchar(300)")

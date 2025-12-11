@@ -64,7 +64,7 @@ public class StudentPaymentService {
 
         //Todo: DiscountCode fullPayment
         studentPayment.setFinalPrice(
-                        studentPayment.getCourseSchedule()
+                        courseSchedule
                         .getCourse()
                         .getPrice()
         );

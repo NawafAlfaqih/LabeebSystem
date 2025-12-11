@@ -45,7 +45,7 @@ public class ParentController {
     @PutMapping("/add-balance/{parentId}/{amount}")
     public ResponseEntity<?> addBalance(@PathVariable Integer parentId, @PathVariable Integer amount) {
         parentService.addBalance(parentId, amount);
-        return ResponseEntity.status(200).body("Balance updated successfully");
+        return ResponseEntity.status(200).body(new ApiResponse("Balance updated successfully"));
     }
 
 }
