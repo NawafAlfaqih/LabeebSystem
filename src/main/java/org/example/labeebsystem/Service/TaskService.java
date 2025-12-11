@@ -46,6 +46,7 @@ public class TaskService {
         task.setPoints(0);
         task.setStatus("Pending");
         task.setCreatedAt(LocalDateTime.now());
+        task.setStudent(student);
         task.setParent(student.getParent());
         task.setTeacher(teacher);
         task.setCreatedBy("Teacher");
@@ -73,6 +74,7 @@ public class TaskService {
         task.setPoints(0);
         task.setStatus("Pending");
         task.setCreatedAt(LocalDateTime.now());
+        task.setStudent(student);
         task.setParent(student.getParent());
         task.setTeacher(teacher);
         task.setCreatedBy("Parent");
