@@ -116,10 +116,9 @@ public List<Session> getAllSessions(Integer adminId) {
     //تجيه رساله قبل الدرس بساعه على ايميله
     @Scheduled(fixedRate = 3600000)
     public void notifyUpcomingSessions() {
-        LocalDate today = LocalDate.now();
-        LocalTime now = LocalTime.now();
+    LocalDate today = LocalDate.now();
+    LocalTime now = LocalTime.now();
         System.out.println("Checking for upcoming session");
-
         List<Session> sessions = sessionRepository.findAll();
         for (Session session : sessions) {
 
@@ -154,24 +153,17 @@ public List<Session> getAllSessions(Integer adminId) {
         if (student == null) {
             throw new ApiException("Student not found");
         }
-
         Session session = sessionRepository.findSessionById(sessionId);
         if (session == null) {
             throw new ApiException("Session not found");
         }
-
         if (!session.getStudent().getId().equals(studentId)) {
             throw new ApiException("This session does not belong to the student");
         }
-
         session.setExcuseText(dto.getExcuseText());
         session.setExcuseFileUrl(dto.getFileUrl());
 
         sessionRepository.save(session);
     }
-
-
-
-
 
 }
