@@ -62,4 +62,17 @@ public class TaskController {
     }
 
 
+    // تاسكات رفعها الأب
+    @GetMapping("/parent-tasks/{parentId}")
+    public ResponseEntity getTasksUploadedByParent(@PathVariable Integer parentId) {
+        return ResponseEntity.status(200).body(taskService.getTasksUploadedByParent(parentId));
+    }
+
+    // تاسكات رفعها التيتشر
+    @GetMapping("/teacher-tasks/{teacherId}")
+    public ResponseEntity getTasksUploadedByTeacher(@PathVariable Integer teacherId) {
+        return ResponseEntity.status(200).body(taskService.getTasksUploadedByTeacher(teacherId));
+    }
+
+
 }

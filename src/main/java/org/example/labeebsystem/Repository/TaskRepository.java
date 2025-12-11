@@ -1,5 +1,6 @@
 package org.example.labeebsystem.Repository;
 
+import org.example.labeebsystem.Model.Parent;
 import org.example.labeebsystem.Model.Student;
 import org.example.labeebsystem.Model.Task;
 import org.example.labeebsystem.Model.Teacher;
@@ -16,4 +17,9 @@ public interface TaskRepository extends JpaRepository<Task,Integer> {
     List<Task> findTaskByTeacher(Teacher teacher);
 
     Task findTaskByStudentAndTeacher(Student student, Teacher teacher);
+
+    List<Task> findAllByParentAndCreatedBy(Parent parent, String createdBy);
+
+    List<Task> findAllByTeacherAndCreatedBy(Teacher teacher, String createdBy);
+
 }

@@ -186,5 +186,25 @@ public class TaskService {
         taskRepository.save(task);
     }
 
+    //هذي التاسكات الي رفعها الاب
+    public List<Task> getTasksUploadedByParent(Integer parentId) {
+
+        Parent parent = parentRepository.findParentById(parentId);
+        if (parent == null) {
+            throw new ApiException("Parent not found");
+        }
+        return taskRepository.findAllByParentAndCreatedBy(parent, "parent");
+    }
+
+
+    //هذي التاسكات الي رفعها التيتشر
+    public List<Task> getTasksUploadedByTeacher(Integer teacherId) {
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null) {
+            throw new ApiException("Teacher not found");
+        }
+        return taskRepository.findAllByTeacherAndCreatedBy(teacher, "teacher");
+    }
+
 
 }
