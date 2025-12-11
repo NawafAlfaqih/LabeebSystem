@@ -48,6 +48,6 @@ public class Session {
 
     @ManyToOne
     @JsonIgnore
-    private Course course;
+    private CourseSchedule courseSchedule;
 
 }

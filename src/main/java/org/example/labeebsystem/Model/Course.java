@@ -25,8 +25,7 @@ public class Course {
     @NotNull(message = "Course title must be filled")
     private String title;
 
-
-    private Double price;
+    private Integer price;
 
     @NotEmpty(message = "description must be filled")
     private String description;
@@ -35,15 +34,7 @@ public class Course {
     @JsonIgnore
     private Teacher teacher;
 
-    @ManyToOne
-    @JsonIgnore
-    private Student student;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
-    private Set<Session> sessions;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "course")
-    @PrimaryKeyJoinColumn
-    private CourseSchedule courseSchedule;
+    private Set<CourseSchedule> courseSchedules;
 }
 

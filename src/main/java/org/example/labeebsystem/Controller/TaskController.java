@@ -22,32 +22,32 @@ public class TaskController {
     public ResponseEntity<?> addTeacherTask(@RequestBody Task task, @PathVariable Integer studentId,
                                             @PathVariable Integer teacherId) {
         taskService.addTeacherTask(task, studentId, teacherId);
-        return ResponseEntity.status(200).body("Task added by teacher successfully");
+        return ResponseEntity.status(200).body(new ApiResponse("Task added by teacher successfully"));
     }
     @PostMapping("/add/parent/{studentId}/{teacherId}/{parentId}")
     public ResponseEntity<?> addParentTask(@RequestBody Task task, @PathVariable Integer studentId,
             @PathVariable Integer teacherId, @PathVariable Integer parentId) {
         taskService.addParentTask(task, studentId, teacherId, parentId);
-        return ResponseEntity.status(200).body("Task added by parent successfully");
+        return ResponseEntity.status(200).body(new ApiResponse("Task added by parent successfully"));
     }
 
     @PutMapping("/update/{taskId}/{teacherId}")
     public ResponseEntity<?> updateTask(@PathVariable Integer taskId, @PathVariable Integer teacherId,
                                         @RequestBody Task task) {
         taskService.updateTask(taskId, task, teacherId);
-        return ResponseEntity.status(200).body("Task updated successfully");
+        return ResponseEntity.status(200).body(new ApiResponse("Task updated successfully"));
     }
 
     @DeleteMapping("/delete/teacher/{taskId}/{teacherId}")
     public ResponseEntity<?> deleteTeacherTask(@PathVariable Integer taskId, @PathVariable Integer teacherId) {
         taskService.deleteTeacherTask(taskId, teacherId);
-        return ResponseEntity.status(200).body("Task deleted by teacher successfully");
+        return ResponseEntity.status(200).body(new ApiResponse("Task deleted by teacher successfully"));
     }
 
     @DeleteMapping("/delete/parent/{taskId}/{parentId}")
     public ResponseEntity<?> deleteParentTask(@PathVariable Integer taskId, @PathVariable Integer parentId) {
         taskService.deleteParentTask(taskId, parentId);
-        return ResponseEntity.status(200).body("Task deleted by parent successfully");
+        return ResponseEntity.status(200).body(new ApiResponse("Task deleted by parent successfully"));
     }
 //هذي المهام الي راح وقتها وماسواها المدرس
     @GetMapping("/expired/{teacherId}")
