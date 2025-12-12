@@ -54,5 +54,10 @@ public class ParentController {
         String result = parentService.generateDiscount(parentId);
         return ResponseEntity.status(200).body(new ApiResponse(result));
     }
-
+//تقرير اسبوعي عن الولد
+@GetMapping("/weekly-report/{parentId}/{studentId}/{courseScheduleId}")
+public ResponseEntity<?> sendWeeklyReport(@PathVariable Integer parentId, @PathVariable Integer studentId, @PathVariable Integer courseScheduleId) {
+    String result = parentService.sendWeeklyReport(parentId, studentId, courseScheduleId);
+    return ResponseEntity.status(200).body(new ApiResponse(result));
+}
 }
