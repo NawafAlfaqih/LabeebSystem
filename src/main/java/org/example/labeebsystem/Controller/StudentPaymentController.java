@@ -22,20 +22,30 @@ public class StudentPaymentController {
         List<StudentPayment> payments = studentPaymentService.getAllStudentCourses(adminId);
         return ResponseEntity.status(200).body(payments);
     }
+//يدفع الدفعه كامله
+    @PostMapping("/buy/full/{parentId}/{studentId}/{scheduleId}")
+    public ResponseEntity<?> buyCourseFullPayment(@PathVariable Integer parentId, @PathVariable Integer studentId, @PathVariable Integer scheduleId, @RequestBody(required = false) String discountCode) {
 
-    @PostMapping("/buy/full/{parentId}/{studentId}/{courseScheduleId}")
-    public ResponseEntity<?> buyCourseFullPayment(@PathVariable Integer parentId, @PathVariable Integer studentId,
-            @PathVariable Integer courseScheduleId, @RequestBody StudentPayment studentPayment) {
-        studentPaymentService.buyCourseFullPayment(parentId, studentId, courseScheduleId, studentPayment);
+        studentPaymentService.buyCourseFullPayment(parentId, studentId, scheduleId, new StudentPayment(), discountCode
+        );
         return ResponseEntity.status(200).body(new ApiResponse("Course purchased successfully (Full Payment)"));
     }
+//يدفع اقساط
+    @PostMapping("/buy/installments/{parentId}/{studentId}/{scheduleId}")
+    public ResponseEntity<?> buyCourseInstallmentsPayment(@PathVariable Integer parentId, @PathVariable Integer studentId, @PathVariable Integer scheduleId, @RequestBody(required = false) String discountCode) {
 
-    @PostMapping("/buy/installments/{parentId}/{studentId}/{courseScheduleId}")
-    public ResponseEntity<?> buyCourseInstallmentsPayment(@PathVariable Integer parentId, @PathVariable Integer studentId,
-            @PathVariable Integer courseScheduleId, @RequestBody StudentPayment studentPayment) {
-        studentPaymentService.buyCourseInstallmentsPayment(parentId, studentId, courseScheduleId, studentPayment);
+        studentPaymentService.buyCourseInstallmentsPayment(parentId, studentId, scheduleId, new StudentPayment(), discountCode
+        );
+
         return ResponseEntity.status(200).body(new ApiResponse("Course purchased successfully (Installments Payment)"));
     }
+    //تقسيط
+    @PutMapping("/pay-installment/{parentId}/{studentPaymentId}")
+    public ResponseEntity<?> payInstallment(@PathVariable Integer parentId, @PathVariable Integer studentPaymentId) {
+        studentPaymentService.payInstallment(parentId, studentPaymentId);
+        return ResponseEntity.status(200).body("Installment paid successfully");
+    }
+
     //طلب استرجاع
     @PostMapping("/refund/{parentId}/{paymentId}")
     public String requestRefund(@PathVariable Integer parentId, @PathVariable Integer paymentId, @RequestBody String message) {
@@ -47,12 +57,7 @@ public class StudentPaymentController {
     public String processRefund(@PathVariable Integer adminId, @PathVariable Integer paymentId, @RequestBody @Valid boolean approve) {
     return studentPaymentService.processRefund(adminId, paymentId, approve);
     }
-//تقسيط
-    @PutMapping("/pay-installment/{parentId}/{studentPaymentId}")
-    public ResponseEntity<?> payInstallment(@PathVariable Integer parentId, @PathVariable Integer studentPaymentId) {
-        studentPaymentService.payInstallment(parentId, studentPaymentId);
-        return ResponseEntity.status(200).body("Installment paid successfully");
-    }
+
 //يعرض الفاتوره ويرسلها ايميل
     @GetMapping("/receipt/{paymentId}")
     public ResponseEntity getReceipt(@PathVariable Integer paymentId) {

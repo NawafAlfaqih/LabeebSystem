@@ -41,6 +41,9 @@ public class StudentPayment  {
 
     private Boolean refundRequested = false;
 
+    private String usedDiscountCode;
+
+
     @Column(columnDefinition = "varchar(300)")
     private String refundMessage;
 

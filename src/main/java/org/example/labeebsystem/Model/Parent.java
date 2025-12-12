@@ -28,6 +28,10 @@ public class Parent {
     @NotEmpty(message = "Email cannot be empty")
     private String email;
 
+
+    @Column(columnDefinition = "varchar(20)")
+    private String discountCode;
+
     @NotEmpty(message = "Password cannot be empty")
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$",
             message = "Password must contain uppercase, lowercase, number and be at least 8 characters")
@@ -45,4 +49,6 @@ public class Parent {
 
     @OneToMany(mappedBy = "parent")
     private Set<TeacherReview> teacherReviews;
+
+
 }

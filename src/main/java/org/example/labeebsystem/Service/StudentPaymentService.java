@@ -30,8 +30,11 @@ public class StudentPaymentService {
         return studentPaymentRepository.findAll();
     }
 
+
     public void buyCourseFullPayment(Integer parentId, Integer studentId,
-                                     Integer courseScheduleId, StudentPayment studentPayment) {
+                                     Integer courseScheduleId, StudentPayment studentPayment,
+                                     String discountCode) {
+
         CourseSchedule courseSchedule = courseScheduleRepository.findCourseScheduleById(courseScheduleId);
         if (courseSchedule == null)
             throw new ApiException("CourseSchedule was not found");
@@ -47,43 +50,49 @@ public class StudentPaymentService {
         if (!parent.equals(student.getParent()))
             throw new ApiException("Not correct parent for student");
 
-        if (parent.getBalance() < courseSchedule.getCourse().getPrice())
-            throw new ApiException("Balance is not sufficient");
+        Double price = courseSchedule.getCourse().getPrice();
+        Double finalPrice = price;
 
-        Set<CourseSchedule> courseSchedules = student.getCourseSchedules();
-        for (CourseSchedule cs: courseSchedules) {
-            if (cs.getDay().equals(courseSchedule.getDay()))
-                throw new ApiException("Cannot have two courses in the same day");
+        if (discountCode != null && parent.getDiscountCode() != null && discountCode.equals(parent.getDiscountCode())) {
+
+            int childrenCount = parent.getStudents().size();
+            int discountPercent = childrenCount * 5;   // مثال: 3 أطفال = 15%
+            if (discountPercent > 50) {
+                discountPercent = 50;
+            }
+
+            Double discountAmount = (price * discountPercent) / 100.0;
+            finalPrice = price - discountAmount;
         }
 
-        Double coursePrice = courseSchedule.getCourse().getPrice();
-        parent.setBalance(parent.getBalance() - coursePrice);
+        if (parent.getBalance() < finalPrice)
+            throw new ApiException("Balance is not sufficient");
+
+        parent.setBalance(parent.getBalance() - finalPrice);
         parentRepository.save(parent);
 
         Teacher teacher = courseSchedule.getCourse().getTeacher();
-        teacher.setBalance(teacher.getBalance() + courseSchedule.getCourse().getPrice());
+        teacher.setBalance(teacher.getBalance() + finalPrice);
         teacherRepository.save(teacher);
 
-        //Todo: DiscountCode fullPayment
-        studentPayment.setFinalPrice(
-                        courseSchedule
-                        .getCourse()
-                        .getPrice()
-        );
+        studentPayment.setFinalPrice(finalPrice);
         studentPayment.setTotalInstallments(1);
         studentPayment.setRemainingInstallments(0);
-        studentPayment.setInstallmentAmount(studentPayment.getFinalPrice());
+        studentPayment.setInstallmentAmount(finalPrice);
+        studentPayment.setPaymentType("Full");
 
         courseSchedule.setAvailability("Registered");
         courseSchedule.setStudent(student);
 
-        studentPayment.setPaymentType("Full");
         studentPayment.setCourseSchedule(courseSchedule);
         studentPaymentRepository.save(studentPayment);
     }
 
-    public void buyCourseInstallmentsPayment(Integer parentId, Integer studentId,
-                                     Integer courseScheduleId, StudentPayment studentPayment) {
+
+
+
+    public void buyCourseInstallmentsPayment(Integer parentId, Integer studentId, Integer courseScheduleId, StudentPayment studentPayment, String discountCode) {
+
         CourseSchedule courseSchedule = courseScheduleRepository.findCourseScheduleById(courseScheduleId);
         if (courseSchedule == null)
             throw new ApiException("CourseSchedule was not found");
@@ -99,16 +108,27 @@ public class StudentPaymentService {
         if (!parent.equals(student.getParent()))
             throw new ApiException("Not correct parent for student");
 
-        if (parent.getBalance() < courseSchedule.getCourse().getPrice()/4.0)
+        Double price = courseSchedule.getCourse().getPrice();
+        Double finalPrice = price;
+
+        if (discountCode != null &&
+                parent.getDiscountCode() != null &&
+                discountCode.equals(parent.getDiscountCode())) {
+
+            int childrenCount = parent.getStudents().size();
+            int discountPercent = childrenCount * 5;
+            if (discountPercent > 50) {
+                discountPercent = 50;
+            }
+
+            Double discountAmount = (price * discountPercent) / 100.0;
+            finalPrice = price - discountAmount;
+        }
+        Double firstInstallment = finalPrice / 4.0;
+
+        if (parent.getBalance() < firstInstallment)
             throw new ApiException("Balance is not sufficient");
 
-        Set<CourseSchedule> courseSchedules = student.getCourseSchedules();
-        for (CourseSchedule cs: courseSchedules) {
-            if (cs.getDay().equals(courseSchedule.getDay()))
-                throw new ApiException("Cannot have two courses in the same day");
-        }
-
-        Double firstInstallment = courseSchedule.getCourse().getPrice()/4.0;
         parent.setBalance(parent.getBalance() - firstInstallment);
         parentRepository.save(parent);
 
@@ -116,23 +136,19 @@ public class StudentPaymentService {
         teacher.setBalance(teacher.getBalance() + firstInstallment);
         teacherRepository.save(teacher);
 
-        //Todo: DiscountCode InstallmentPayment
-        studentPayment.setFinalPrice(
-                        courseSchedule
-                        .getCourse()
-                        .getPrice()
-        );
+        studentPayment.setFinalPrice(finalPrice);
         studentPayment.setTotalInstallments(4);
         studentPayment.setRemainingInstallments(3);
-        studentPayment.setInstallmentAmount(studentPayment.getFinalPrice()/4);
+        studentPayment.setInstallmentAmount(finalPrice / 4);
+        studentPayment.setPaymentType("Installments");
 
         courseSchedule.setAvailability("Registered");
         courseSchedule.setStudent(student);
 
-        studentPayment.setPaymentType("Installments");
         studentPayment.setCourseSchedule(courseSchedule);
         studentPaymentRepository.save(studentPayment);
     }
+
 
     //Todo: Pay installment دفع دفعه
     public void payInstallment(Integer parentId, Integer studentPaymentId) {

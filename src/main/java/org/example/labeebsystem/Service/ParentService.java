@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -75,6 +76,30 @@ public class ParentService {
         parentRepository.save(parent);
     }
 
+//توليد كود الخصم بناد على عدد ابناءه
+    public String generateDiscount(Integer parentId) {
 
+        Parent parent = parentRepository.findParentById(parentId);
+        if (parent == null)
+            throw new ApiException("Parent not found");
+
+        int childrenCount = parent.getStudents().size();
+
+        if (childrenCount < 2)
+            throw new ApiException("Discount applies only for parents with 2 or more children");
+
+        int discountPercentage = childrenCount * 5;
+
+        if (discountPercentage > 50)
+            discountPercentage = 50;
+
+
+        String code = "DISC-" + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+
+        parent.setDiscountCode(code);
+        parentRepository.save(parent);
+
+        return "Discount: " + discountPercentage + "% — Code: " + code;
+    }
 
 }

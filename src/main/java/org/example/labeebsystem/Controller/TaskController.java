@@ -33,8 +33,7 @@ public class TaskController {
     }
 
     @PutMapping("/update/{taskId}/{teacherId}")
-    public ResponseEntity<?> updateTask(@PathVariable Integer taskId, @PathVariable Integer teacherId,
-                                        @RequestBody @Valid Task task) {
+    public ResponseEntity<?> updateTask(@PathVariable Integer taskId, @PathVariable Integer teacherId, @RequestBody @Valid Task task) {
         taskService.updateTask(taskId, task, teacherId);
         return ResponseEntity.status(200).body(new ApiResponse("Task updated successfully"));
     }
