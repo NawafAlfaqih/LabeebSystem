@@ -10,8 +10,7 @@ import org.example.labeebsystem.Repository.CourseScheduleRepository;
 import org.example.labeebsystem.Repository.TeacherRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -137,5 +136,30 @@ public class CourseScheduleService {
                         existing.getStart_time().isBefore(newSchedule.getEnd_time());
         return timeOverlaps;
     }
+
+
+    //يطلع الايام المتاحة الي مااناخذت
+    public List<String> getAvailableDays(Integer courseId) {
+
+        Course course = courseRepository.findCourseById(courseId);
+        if (course == null)
+            throw new ApiException("Course not found");
+
+        Set<CourseSchedule> schedules = course.getCourseSchedules();
+        Set<String> takenDays = new HashSet<>();
+
+        for (CourseSchedule cs : schedules) {
+            takenDays.add(cs.getDay());
+        }
+        List<String> allDays = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday");
+        List<String> availableDays = new ArrayList<>();
+        for (String day : allDays) {
+            if (!takenDays.contains(day)) {
+                availableDays.add(day);
+            }
+        }
+        return availableDays;
+    }
+
 
 }

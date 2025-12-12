@@ -42,8 +42,4 @@ public class CourseController {
         return ResponseEntity.status(200).body(new ApiResponse("Course deleted successfully"));
     }
 
-    /*
-    1- Refund course -> accept/reject by AI
-    2-
-     */
 }

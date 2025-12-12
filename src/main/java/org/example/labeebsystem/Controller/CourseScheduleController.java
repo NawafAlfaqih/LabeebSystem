@@ -8,6 +8,8 @@ import org.example.labeebsystem.Service.CourseScheduleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/schedule")
@@ -44,4 +46,13 @@ public class CourseScheduleController {
         courseScheduleService.deleteSchedule(id, teacherId);
         return ResponseEntity.status(200).body(new ApiResponse("Course schedule deleted successfully"));
     }
+    //يطلع لي الايام المتاحة للكورس
+    @GetMapping("/available-days/{courseId}")
+    public ResponseEntity getAvailableDays(@PathVariable Integer courseId) {
+
+        List<String> availableDays = courseScheduleService.getAvailableDays(courseId);
+        return ResponseEntity.status(200).body(new ApiResponse(availableDays));
+    }
+
+
 }

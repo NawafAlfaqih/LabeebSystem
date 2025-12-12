@@ -52,7 +52,6 @@ public class ParentController {
     public ResponseEntity generateDiscount(@PathVariable Integer parentId) {
 
         String result = parentService.generateDiscount(parentId);
-
         return ResponseEntity.status(200).body(new ApiResponse(result));
     }
 
