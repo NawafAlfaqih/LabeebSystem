@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class GiftCardController {
 
     private final GiftCardService giftCardService;
-
+//عرض القيفت كاردز لطالب معين
     @GetMapping("/student/{studentId}")
     public ResponseEntity<?> getGiftCardsOfStudent(@PathVariable Integer studentId) {
         return ResponseEntity.status(200).body(giftCardService.getGiftCardsOfStudent(studentId));
     }
-
+//يشتري قيفت كارد
     @PostMapping("/buy/{studentId}")
     public ResponseEntity<?> buyGiftCard(@PathVariable Integer studentId, @Valid @RequestBody GiftCardDTOin giftCardDTO) {
         giftCardService.buyGiftCard(studentId, giftCardDTO);

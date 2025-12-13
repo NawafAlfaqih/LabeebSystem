@@ -30,7 +30,7 @@ public class StudentPaymentService {
         return studentPaymentRepository.findAll();
     }
 
-
+//يدفع دفع كامل
     public void buyCourseFullPayment(Integer parentId, Integer studentId,
                                      Integer courseScheduleId, StudentPayment studentPayment,
                                      String discountCode) {
@@ -90,7 +90,7 @@ public class StudentPaymentService {
 
 
 
-
+//يدفع اقساط
     public void buyCourseInstallmentsPayment(Integer parentId, Integer studentId, Integer courseScheduleId, StudentPayment studentPayment, String discountCode) {
 
         CourseSchedule courseSchedule = courseScheduleRepository.findCourseScheduleById(courseScheduleId);
@@ -149,8 +149,7 @@ public class StudentPaymentService {
         studentPaymentRepository.save(studentPayment);
     }
 
-
-    //Todo: Pay installment دفع دفعه
+//يدفع دفعه من القسط
     public void payInstallment(Integer parentId, Integer studentPaymentId) {
         StudentPayment studentPayment = studentPaymentRepository.findStudentPaymentById(studentPaymentId);
         if (studentPayment == null)
