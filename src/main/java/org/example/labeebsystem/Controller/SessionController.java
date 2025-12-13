@@ -50,4 +50,10 @@ public class SessionController {
     sessionService.uploadExcuse(studentId, sessionId, dto);
     return ResponseEntity.status(200).body("Excuse submitted successfully");
 }
+    // يسوي رابط زووم
+    @PostMapping("/generate-url/{sessionId}")
+    public ResponseEntity<?> generateUrlForSession(@PathVariable Integer sessionId){
+            String url = sessionService.generateUrlForSession(sessionId);
+        return ResponseEntity.status(200).body("URL generated successfully, \n"+url);
+    }
 }

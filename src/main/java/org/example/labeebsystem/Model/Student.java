@@ -53,4 +53,7 @@ public class Student {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private Set<GiftCard> giftCards;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "student")
+    private Set<StudentAssessment> studentAssessments;
 }

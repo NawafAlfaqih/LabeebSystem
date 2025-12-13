@@ -25,7 +25,6 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty(message = "URL must be added")
     private String sessionUrl;
 
     @Column(columnDefinition = "date not null")

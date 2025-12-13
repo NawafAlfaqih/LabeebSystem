@@ -3,6 +3,7 @@ package org.example.labeebsystem.Service;
 import lombok.RequiredArgsConstructor;
 import org.example.labeebsystem.API.ApiException;
 import org.example.labeebsystem.DTO_in.ExcuseDTO;
+import org.example.labeebsystem.DTO_in.UrlDTO;
 import org.example.labeebsystem.DTO_out.AttendanceReportDTO;
 import org.example.labeebsystem.Model.*;
 import org.example.labeebsystem.Repository.*;
@@ -20,11 +21,10 @@ public class SessionService {
 
     private final SessionRepository sessionRepository;
     private final CourseScheduleRepository courseScheduleRepository;
-private final AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
     private final EmailService emailService;
-
-private final StudentRepository studentRepository;
-
+    private final StudentRepository studentRepository;
+    private final N8nZoomUrlService n8nZoomUrlService;
 
 public List<Session> getAllSessions(Integer adminId) {
     Admin admin = adminRepository.findAdminById(adminId);
@@ -161,6 +161,16 @@ public List<Session> getAllSessions(Integer adminId) {
         session.setExcuseFileUrl(dto.getFileUrl());
 
         sessionRepository.save(session);
+    }
+
+    public String generateUrlForSession(Integer sessionId){
+        Session session=sessionRepository.findSessionById(sessionId);
+        if(session==null)
+            throw new ApiException("session Id not found");
+        UrlDTO dto=n8nZoomUrlService.triggerZoom(sessionId);
+        session.setSessionUrl(dto.getJoin_url());
+        sessionRepository.save(session);
+        return dto.getJoin_url();
     }
 
 }
