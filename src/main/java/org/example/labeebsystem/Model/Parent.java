@@ -20,8 +20,12 @@ public class Parent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotEmpty(message = "name cannot be empty")
+    @Pattern(regexp = "^[\\p{L} ]{2,}$", message = "name must contain characters only")
     private String name;
 
+    @NotEmpty(message = "PhoneNumber cannot be empty")
+    @Pattern(regexp = "^+966\\d{9}$", message = "PhoneNumber must start with +966 contain 9 digits only")
     private String phoneNumber;
 
     @Email(message = "Email must be a valid email format")

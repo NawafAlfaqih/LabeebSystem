@@ -21,6 +21,8 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotEmpty(message = "name cannot be empty")
+    @Pattern(regexp = "^[\\p{L} ]{2,}$", message = "name must contain characters only")
     private String name;
 
     @PositiveOrZero(message = "Balance must be zero or positive")
