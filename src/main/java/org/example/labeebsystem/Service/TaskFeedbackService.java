@@ -21,6 +21,7 @@ public class TaskFeedbackService {
     private final TaskFeedbackRepository taskFeedbackRepository;
     private final TaskRepository taskRepository;
     private final TeacherRepository teacherRepository;
+    private final N8nMarkPredictionService n8nMarkPredictionService;
 
 
     public List<TaskFeedback> getAllFeedbacks() {
@@ -84,4 +85,16 @@ public class TaskFeedbackService {
 
         taskFeedbackRepository.delete(feedback);
     }
+
+    public String predictGrade(Integer teacherId,Integer taskId){
+        Task task = taskRepository.findTaskById(taskId);
+        if (task == null)
+            throw new ApiException("Task not found");
+
+        Teacher teacher = teacherRepository.findTeacherById(teacherId);
+        if (teacher == null)
+            throw new ApiException("Teacher not found");
+        return n8nMarkPredictionService.triggerPrediction(task.getFileAnswerUrl());
+    }
+
 }

@@ -40,4 +40,9 @@ public class TaskFeedbackController {
         taskFeedbackService.deleteFeedback(feedbackId, teacherId);
         return ResponseEntity.status(200).body(new ApiResponse("Feedback deleted successfully"));
     }
+
+    @PostMapping("/predict/{teacherId}/{taskId}")
+    public ResponseEntity<?> predictGrade(@PathVariable Integer teacherId, @PathVariable Integer taskId ){
+        return ResponseEntity.status(200).body(taskFeedbackService.predictGrade(teacherId,taskId));
+    }
 }
