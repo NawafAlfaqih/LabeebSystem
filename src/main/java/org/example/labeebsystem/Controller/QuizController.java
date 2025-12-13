@@ -14,6 +14,7 @@ import java.util.Map;
 public class QuizController {
 
     private final QuizService quizService;
+    //لعبه وقت الفراغ
     @PostMapping("/play")
     public ResponseEntity<?> playQuiz (@RequestBody Map<String, String> body) {
 

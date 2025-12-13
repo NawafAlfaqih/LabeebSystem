@@ -54,13 +54,13 @@ public class TeacherController {
     public ResponseEntity<?> getAllPendingTeachers(@PathVariable Integer adminID){
         return ResponseEntity.status(200).body(teacherService.getAllPendingTeachers(adminID));
     }
-
+//يقبل المدرس
     @PutMapping("/accept-teacher/{adminId}/{teacherId}")
     public ResponseEntity<?>  acceptTeacher(@PathVariable Integer adminId, @PathVariable Integer teacherId){
         teacherService.acceptTeacher(adminId,teacherId);
         return ResponseEntity.status(200).body(new ApiResponse("teacher accepted successfully"));
     }
-
+//يرفض المدرس
     @PutMapping("/reject-teacher/{adminId}/{teacherId}")
     public ResponseEntity<?>  rejectTeacher(@PathVariable Integer adminId, @PathVariable Integer teacherId){
         teacherService.rejectTeacher(adminId,teacherId);
