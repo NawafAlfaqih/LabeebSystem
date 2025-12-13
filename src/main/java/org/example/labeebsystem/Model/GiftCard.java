@@ -22,7 +22,7 @@ public class GiftCard {
 
     private Double price;
 
-    private String key;
+    private String redeemKey;
 
     @ManyToOne
     @JsonIgnore

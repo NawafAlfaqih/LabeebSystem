@@ -29,7 +29,7 @@ public class GiftCardService {
         List<GiftCard> giftCards = giftCardRepository.findGiftCardByStudent(student);
         ArrayList<GiftCardDTOout> dtos = new ArrayList<>();
         for (GiftCard g: giftCards) {
-            GiftCardDTOout dto = new GiftCardDTOout(g.getType(), g.getPrice(), g.getKey());
+            GiftCardDTOout dto = new GiftCardDTOout(g.getType(), g.getPrice(), g.getRedeemKey());
             dtos.add(dto);
         }
         return dtos;
